@@ -1,10 +1,4 @@
 <?php
-/**
- * @link  : http://www.yinhexi.com/
- * @author: AbrahamGreyson <82011220@qq.com>
- * @date  : 01/20/2016
- */
-
 namespace CloudStorage;
 use CloudStorage\Contracts\CommandInterface;
 use CloudStorage\Facilities\DataTrait;

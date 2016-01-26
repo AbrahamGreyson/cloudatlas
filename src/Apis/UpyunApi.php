@@ -1,9 +1,5 @@
 <?php
-/**
- * @link  : http://www.yinhexi.com/
- * @author: AbrahamGreyson <82011220@qq.com>
- * @date  : 01/25/2016
- */
+
 
 return [
     'version'  => 'default',
