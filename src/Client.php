@@ -1,7 +1,6 @@
 <?php
 namespace CloudStorage;
 
-
 use CloudStorage\Contracts\ClientInterface;
 use CloudStorage\Contracts\CommandInterface;
 use CloudStorage\Contracts\ResultInterface;
@@ -10,7 +9,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * CloudStorage 客户端，用来和云服务进行交互。
- *
+ * @method \GuzzleHttp\Promise\Promise PutObject($bucket, $key, $stream);
  * @package CloudStorage
  */
 class Client implements ClientInterface
@@ -81,7 +80,7 @@ class Client implements ClientInterface
         // 根据 $this 解析当前的 service 和异常类 赋值给 arguments
         $this->handlerList = new HandlerList();
         // todo 传入参数和默认参数的合并
-        // 签名中间件
+        // 子类在这里签名中间件
     }
 
     /**
@@ -262,4 +261,13 @@ class Client implements ClientInterface
 
         return new ResultPaginator($this, $name, $args, $config);
     }
-}
+
+    /**
+     * 获取和对应云服务客户端相关联的服务描述。
+     *
+     * @return \CloudStorage\Api\Service
+     */
+    public function getApi()
+    {
+        // TODO: Implement getApi() method.
+    }}

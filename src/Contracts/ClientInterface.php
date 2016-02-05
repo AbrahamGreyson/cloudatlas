@@ -57,7 +57,7 @@ interface ClientInterface
     public function executeAsync(CommandInterface $command);
 
     /**
-     * 返回一个已完成的 {@see CredentialsInterface} 对象的 promise。
+     * 返回一个已完成的 promise，代表已完成的 {@see CredentialsInterface} 对象。
      *
      * 如果你需要同步获得凭证，在返回的 promise 对象上调用 wait() 方法即可。
      *
@@ -66,19 +66,20 @@ interface ClientInterface
     public function getCredentials();
 
     /**
-     * 获取默认的连接点或基本 URL，供客户端使用。
+     * 获取默认的连接点或 URL，供客户端使用。
      *
      * @return UriInterface
      */
     public function getEndpoint();
 
-    ///**
-    // * @return mixed
-    // */
-    //public function getApi();
+    /**
+     * 获取和对应云服务客户端相关联的服务描述。
+     * @return \CloudStorage\Api\Service
+     */
+    public function getApi();
 
     /**
-     * 获取一个客户端配置的值。
+     * 获取客户端配置中的某个值。
      *
      * @param string|null $options 要取回的配置选项，传递空取回所有配置。
      *

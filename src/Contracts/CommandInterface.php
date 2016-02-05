@@ -1,5 +1,6 @@
 <?php
 namespace CloudStorage\Contracts;
+use CloudStorage\HandlerList;
 
 
 /**
