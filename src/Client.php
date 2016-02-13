@@ -234,8 +234,7 @@ abstract class Client implements ClientInterface
         if (!$config['result_key']) {
             throw new \UnexpectedValueException(sprintf(
                 'There are no resources to iterate for the %s
-                operation of $s'
-                , $name, $this->api['serviceFullName']));
+                operation of $s', $name, $this->api['serviceFullName']));
         }
 
         $key = is_array($config['result_key'])

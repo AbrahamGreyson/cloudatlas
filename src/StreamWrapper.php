@@ -7,5 +7,4 @@ namespace CloudStorage;
  */
 class StreamWrapper
 {
-
 }

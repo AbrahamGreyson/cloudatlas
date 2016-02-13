@@ -1,5 +1,6 @@
 <?php
 namespace CloudStorage;
+
 use CloudStorage\Contracts\CommandInterface;
 use CloudStorage\Facilities\DataTrait;
 
@@ -32,7 +33,6 @@ class Command implements CommandInterface
      */
     public function __construct($name, array $args = [], HandlerList $list = null)
     {
-
         $this->name = $name;
         $this->data = $args;
         $this->handlerList = $list;

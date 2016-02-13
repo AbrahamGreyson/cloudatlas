@@ -3,8 +3,6 @@
 
 namespace CloudStorage\Qiniu;
 
-
 class QiniuClient
 {
-    
 }

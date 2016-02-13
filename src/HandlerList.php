@@ -1,7 +1,6 @@
 <?php
 namespace CloudStorage;
 
-
 /**
  * 代表一个处理器列表。
  *
@@ -480,5 +479,4 @@ class HandlerList implements \Countable
             $this->named[$name] = $step;
         }
     }
-
 }

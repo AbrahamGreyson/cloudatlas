@@ -1,7 +1,6 @@
 <?PHP
 namespace CloudStorage\Upyun;
 
-
 use CloudStorage\Client;
 
 class UpyunClient extends Client

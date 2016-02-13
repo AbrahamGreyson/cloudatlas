@@ -1,7 +1,6 @@
 <?php
 namespace CloudStorage\Signatures;
 
-
 use CloudStorage\Credentials\CredentialsInterface;
 use Psr\Http\Message\RequestInterface;
 
