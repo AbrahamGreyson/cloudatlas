@@ -1,6 +1,6 @@
 <?php
-namespace CloudStorage\Upyun;
 
+namespace CloudStorage\Upyun;
 
 use CloudStorage\Credentials\CredentialsInterface;
 use CloudStorage\Signatures\SignatureInterface;
@@ -8,7 +8,6 @@ use Psr\Http\Message\RequestInterface;
 
 class Signature implements SignatureInterface
 {
-    
     /**
      * 通过提供的凭证，对特定请求进行签名，并添加对应的 HTTP 头至请求中。
      *
@@ -20,9 +19,6 @@ class Signature implements SignatureInterface
     public function signRequest(
         RequestInterface $request,
         CredentialsInterface $credential
-    )
-    {
-
-
+    ) {
     }
 }

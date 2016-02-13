@@ -1,13 +1,11 @@
 <?php
+
 namespace CloudStorage;
 
 use Psr\Http\Message\RequestInterface;
 
-
 /**
  * 请求中间件。
- *
- * @package CloudStorage
  */
 final class Middleware
 {
@@ -47,8 +45,7 @@ final class Middleware
                 $signer = $signatureFunction($command);
 
                 return $credProvider()->then(
-                    function (CredentialsInterface $creds)
-                    use ($handler, $command, $signer, $request) {
+                    function (CredentialsInterface $creds) use ($handler, $command, $signer, $request) {
                         return $handler(
                             $command,
                             $signer->signRequest($request, $creds)
@@ -58,5 +55,4 @@ final class Middleware
             };
         };
     }
-
 }

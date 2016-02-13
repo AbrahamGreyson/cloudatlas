@@ -1,4 +1,5 @@
 <?php
+
 namespace CloudStorage;
 
 /**
@@ -7,5 +8,4 @@ namespace CloudStorage;
  */
 class StreamWrapper
 {
-
 }

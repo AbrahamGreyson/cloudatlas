@@ -1,4 +1,5 @@
 <?php
+
 namespace CloudStorage;
 
 use CloudStorage\Contracts\ClientInterface;
@@ -11,10 +12,9 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * CloudStorage 客户端，用来和云服务进行交互。
+ *
  * @method Promise PutObject($bucket, $key, $stream);
  * @method Promise Copy($key, $to);
- *
- * @package CloudStorage
  */
 abstract class Client implements ClientInterface
 {
@@ -49,7 +49,7 @@ abstract class Client implements ClientInterface
     private $handlerList;
 
     /**
-     * 客户端构造方法接受一个关联数组作为参数，以下是关联数组的可用选项：
+     * 客户端构造方法接受一个关联数组作为参数，以下是关联数组的可用选项：.
      *
      * - credentials：（CredentialsInterface|array|bool|callable）
      *   指定用来给请求签名的凭证。可以提供：
@@ -119,8 +119,9 @@ abstract class Client implements ClientInterface
      * @param string $name 命令所使用的操作名称。
      * @param array  $args 传递给命令的额外参数。
      *
-     * @return CommandInterface
      * @throws \InvalidArgumentException 如果命令不存在。
+     *
+     * @return CommandInterface
      */
     public function getCommand($name, array $args = [])
     {
@@ -225,8 +226,9 @@ abstract class Client implements ClientInterface
      * @param string $name 想要取回的迭代器名称。
      * @param array  $args 每个命令所使用的命令参数。
      *
-     * @return \Iterator
      * @throws \UnexpectedValueException 如果迭代器配置无效。
+     *
+     * @return \Iterator
      */
     public function getIterator($name, array $args = [])
     {
@@ -234,8 +236,7 @@ abstract class Client implements ClientInterface
         if (!$config['result_key']) {
             throw new \UnexpectedValueException(sprintf(
                 'There are no resources to iterate for the %s
-                operation of $s'
-                , $name, $this->api['serviceFullName']));
+                operation of $s', $name, $this->api['serviceFullName']));
         }
 
         $key = is_array($config['result_key'])
@@ -248,7 +249,7 @@ abstract class Client implements ClientInterface
 
         $result = $this->execute($this->getCommand($name, $args))->search($key);
 
-        return new \ArrayIterator((array)$result);
+        return new \ArrayIterator((array) $result);
     }
 
     /**
@@ -257,8 +258,9 @@ abstract class Client implements ClientInterface
      * @param string $name 迭代器使用的操作名称。
      * @param array  $args 每个命令所使用的命令参数。
      *
-     * @return ResultPaginator
      * @throws \UnexpectedValueException 如果迭代器配置无效。
+     *
+     * @return ResultPaginator
      */
     public function getPaginator($name, array $args = [])
     {

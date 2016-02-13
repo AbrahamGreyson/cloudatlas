@@ -1,6 +1,6 @@
 <?php
-namespace CloudStorage\Upyun;
 
+namespace CloudStorage\Upyun;
 
 use CloudStorage\Credentials\CredentialsInterface;
 use CloudStorage\Signatures\SignatureInterface;
@@ -8,7 +8,6 @@ use Psr\Http\Message\RequestInterface;
 
 class BasicSignature implements SignatureInterface
 {
-    
     /**
      * 通过提供的凭证，对特定请求进行签名，并添加对应的 HTTP 头至请求中。
      *
@@ -20,10 +19,9 @@ class BasicSignature implements SignatureInterface
     public function signRequest(
         RequestInterface $request,
         CredentialsInterface $credential
-    )
-    {
+    ) {
         $content = base64_encode(
-            $credential['key'] . ':' .
+            $credential['key'].':'.
             $credential['secret']
         );
         $basicSignature = "Basic $content";
