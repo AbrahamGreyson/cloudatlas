@@ -2,8 +2,6 @@
 
 namespace CloudStorage\Api\Service;
 
-
 class Service
 {
-    
 }

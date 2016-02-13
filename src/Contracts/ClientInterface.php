@@ -134,5 +134,4 @@ interface ClientInterface
     // * @return mixed
     // */
     //public function getWaiter($name, array $args = []);
-
 }

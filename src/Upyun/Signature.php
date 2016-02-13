@@ -1,7 +1,6 @@
 <?php
 namespace CloudStorage\Upyun;
 
-
 use CloudStorage\Credentials\CredentialsInterface;
 use CloudStorage\Signatures\SignatureInterface;
 use Psr\Http\Message\RequestInterface;
@@ -20,9 +19,6 @@ class Signature implements SignatureInterface
     public function signRequest(
         RequestInterface $request,
         CredentialsInterface $credential
-    )
-    {
-
-
+    ) {
     }
 }
