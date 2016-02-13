@@ -1,16 +1,16 @@
 <?php
-namespace CloudStorage\Credentials;
 
+namespace CloudStorage\Credentials;
 
 use CloudStorage\Contracts\Arrayable;
 
 /**
  * 凭证接口的基本实现，允许客户端代码传递各个云服务的公钥和密钥进来。
  * 这个类必须被继承，必须使用子类。
- *
- * @package CloudStorage\Credentials
  */
-abstract class AbstractCredential implements CredentialsInterface, Arrayable,
+abstract class AbstractCredential implements
+CredentialsInterface,
+Arrayable,
     \Serializable
 {
     private $key;

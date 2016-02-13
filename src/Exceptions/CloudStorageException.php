@@ -1,11 +1,9 @@
 <?php
-namespace CloudStorage\Exceptions;
 
+namespace CloudStorage\Exceptions;
 
 use RuntimeException;
 
-class CloudStorageException extends RuntimeException implements
-    CloudStorageExceptionInterface
+class CloudStorageException extends RuntimeException implements CloudStorageExceptionInterface
 {
-    
 }

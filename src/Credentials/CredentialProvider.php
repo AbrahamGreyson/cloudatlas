@@ -1,6 +1,6 @@
 <?php
-namespace CloudStorage\Credentials;
 
+namespace CloudStorage\Credentials;
 
 /**
  * 凭证提供者是一组不接受参数，并返回一个 promise，代表已完成的 {@see
@@ -33,27 +33,22 @@ namespace CloudStorage\Credentials;
  * // 同步等待凭证状态被取得。
  * $creds = $promise->wait();
  * </code>
- * @package CloudStorage\Credentials
  */
 class CredentialProvider
 {
     public static function defaultProvider()
     {
-
     }
 
     public static function compose()
     {
-
     }
 
     public static function env()
     {
-
     }
 
     public static function ini()
     {
-
     }
 }

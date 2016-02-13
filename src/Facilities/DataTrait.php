@@ -1,12 +1,11 @@
 <?php
+
 namespace CloudStorage\Facilities;
 
 /**
  * 实现了 {@see CloudStorage\Contracts\Arrayable } 接口，
  * 实现了 \ArrayAccess, \Countable，\IteratorAggregate。
  * 用来降低同样要求实现这几个接口的类的代码重复。
- *
- * @package CloudStorage
  */
 trait DataTrait
 {
@@ -23,7 +22,6 @@ trait DataTrait
         return new \ArrayIterator($this->data);
     }
 
-
     /**
      * 返回变量的引用，以便允许对多维数组进行修改。
      * 如：$foo['bar']['baz'] = 'qux'; 。
@@ -32,7 +30,7 @@ trait DataTrait
      *
      * @return mixed|null
      */
-    public function & offsetGet($offset)
+    public function &offsetGet($offset)
     {
         if (isset($this->data[$offset])) {
             return $this->data[$offset];

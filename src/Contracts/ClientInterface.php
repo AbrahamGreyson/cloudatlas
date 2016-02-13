@@ -1,4 +1,5 @@
 <?php
+
 namespace CloudStorage\Contracts;
 
 use GuzzleHttp\Promise\PromiseInterface;
@@ -17,8 +18,9 @@ interface ClientInterface
      * @param string $name      执行的操作名称。
      * @param array  $arguments 传递给 getCommand 方法的参数。
      *
-     * @return ResultInterface
      * @throws \Exception
+     *
+     * @return ResultInterface
      */
     public function __call($name, array $arguments);
 
@@ -33,8 +35,9 @@ interface ClientInterface
      * @param string $name 命令所使用的操作名称。
      * @param array  $args 传递给命令的额外参数。
      *
-     * @return CommandInterface
      * @throws \InvalidArgumentException 如果命令不存在。
+     *
+     * @return CommandInterface
      */
     public function getCommand($name, array $args = []);
 
@@ -74,6 +77,7 @@ interface ClientInterface
 
     /**
      * 获取和对应云服务客户端相关联的服务描述。
+     *
      * @return \CloudStorage\Api\Service
      */
     public function getApi();
@@ -102,8 +106,9 @@ interface ClientInterface
      * @param string $name 想要取回的迭代器名称。
      * @param array  $args 每个命令所使用的命令参数。
      *
-     * @return \Iterator
      * @throws \UnexpectedValueException 如果迭代器配置无效。
+     *
+     * @return \Iterator
      */
     public function getIterator($name, array $args = []);
 
@@ -113,8 +118,9 @@ interface ClientInterface
      * @param string $name 迭代器使用的操作名称。
      * @param array  $args 每个命令所使用的命令参数。
      *
-     * @return ResultPaginator
      * @throws \UnexpectedValueException 如果迭代器配置无效。
+     *
+     * @return ResultPaginator
      */
     public function getPaginator($name, array $args = []);
 
@@ -134,5 +140,4 @@ interface ClientInterface
     // * @return mixed
     // */
     //public function getWaiter($name, array $args = []);
-
 }

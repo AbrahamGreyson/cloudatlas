@@ -1,4 +1,5 @@
 <?php
+
 namespace CloudStorage\Contracts;
 
 interface Arrayable

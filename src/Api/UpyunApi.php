@@ -1,4 +1,5 @@
 <?php
+
 return [
     'version'       => 'default',
     'metadata'      => [

@@ -4,11 +4,8 @@
  * @author: AbrahamGreyson <82011220@qq.com>
  * @date  : 01/22/2016
  */
-
 namespace CloudStorage\Qiniu;
-
 
 class QiniuClient
 {
-    
 }
