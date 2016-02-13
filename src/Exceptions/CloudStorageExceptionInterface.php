@@ -1,5 +1,5 @@
 <?php
-namespace CloudStorage\Contracts;
+namespace CloudStorage\Exceptions;
 
 interface CloudStorageExceptionInterface
 {

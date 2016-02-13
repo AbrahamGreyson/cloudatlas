@@ -4,15 +4,19 @@ namespace CloudStorage;
 use CloudStorage\Contracts\ClientInterface;
 use CloudStorage\Contracts\CommandInterface;
 use CloudStorage\Contracts\ResultInterface;
+use CloudStorage\Exceptions\CloudStorageException;
+use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
  * CloudStorage 客户端，用来和云服务进行交互。
- * @method \GuzzleHttp\Promise\Promise PutObject($bucket, $key, $stream);
+ * @method Promise PutObject($bucket, $key, $stream);
+ * @method Promise Copy($key, $to);
+ *
  * @package CloudStorage
  */
-class Client implements ClientInterface
+abstract class Client implements ClientInterface
 {
     /**
      * @var string
@@ -77,7 +81,8 @@ class Client implements ClientInterface
      */
     public function __construct(array $arguments)
     {
-        // 根据 $this 解析当前的 service 和异常类 赋值给 arguments
+        list($arguments['service'], $arguments['exceptionClass']) = $this->parseClass();
+
         $this->handlerList = new HandlerList();
         // todo 传入参数和默认参数的合并
         // 子类在这里签名中间件
@@ -243,7 +248,7 @@ class Client implements ClientInterface
 
         $result = $this->execute($this->getCommand($name, $args))->search($key);
 
-        return new \ArrayIterator((array) $result);
+        return new \ArrayIterator((array)$result);
     }
 
     /**
@@ -270,4 +275,26 @@ class Client implements ClientInterface
     public function getApi()
     {
         // TODO: Implement getApi() method.
-    }}
+    }
+
+    /**
+     * 根据客户端类名解析服务名和对应的异常类并返回。
+     *
+     * @return array
+     */
+    private function parseClass()
+    {
+        $class = get_class($this);
+
+        if ($class === __CLASS__) {
+            return ['', CloudStorageException::class];
+        }
+
+        $service = substr($class, strrpos($class, '\\') + 1, -6);
+
+        return [
+            strtolower($service),
+            "\\CloudStorage\\{$service}\\Exceptions\\{$service}Exception",
+        ];
+    }
+}
