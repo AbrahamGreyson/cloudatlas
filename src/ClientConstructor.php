@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * CloudStorage
+ * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * @author: AbrahamGreyson <82011220@qq.com>
+ * @license: MIT
+ */
+
 namespace CloudStorage;
 
 use CloudStorage\Credentials\CredentialsInterface;
@@ -111,5 +118,4 @@ class ClientConstructor
             。处理器并不接收下一个处理器，因为其是最终的，用来完成一个命令的函数。如果没有提供处理器，则使用默认的 Guzzle 处理器。',
         ],
     ];
-
 }
