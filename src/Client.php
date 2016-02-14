@@ -46,6 +46,8 @@ abstract class Client implements ClientInterface
      */
     private $signatureProvider;
 
+
+
     /**
      * @var array
      */
@@ -94,6 +96,7 @@ abstract class Client implements ClientInterface
         $this->handlerList = new HandlerList();
         // todo 传入参数和默认参数的合并
         // 子类在这里签名中间件
+        //
     }
 
     /**
