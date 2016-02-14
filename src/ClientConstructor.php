@@ -276,8 +276,7 @@ class ClientConstructor
 
         if ($isRequired && is_callable($arg['required'])) {
             $msg .= "\n\n  ";
-            $msg .= str_replace("\n", "\n  ", call_user_func
-            ($arg['required'], $arguments));
+            $msg .= str_replace("\n", "\n  ", call_user_func($arg['required'], $arguments));
         } elseif (isset($arg['doc'])) {
             $msg .= wordwrap("\n\n  {$arg['doc']}", 75, "\n  ");
         }
@@ -341,5 +340,4 @@ class ClientConstructor
                 . 'key-value pairs, a credentials provider function, or false.');
         }
     }
-
 }
