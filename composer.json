@@ -1,15 +1,15 @@
 {
-  "name": "AbrahamGreyson/Upyun",
-  "description": "The Upyun storage develop package.",
+  "name": "AbrahamGreyson/cloudstorage",
+  "description": "The cloud service develop package.",
   "license": "MIT",
   "support": {
-    "issues": "https://github.com/abrahamgreyson/upyun/issues",
-    "source": "https://github.com/abrahamgreyson/upyun"
+    "issues": "https://github.com/abrahamgreyson/cloudstorage/issues",
+    "source": "https://github.com/abrahamgreyson/cloudstorage"
   },
   "authors": [
     {
       "name": "Abraham Greyson",
-      "email": "abrahamgreyson@gmail.com"
+      "email": "82011220@qq.com"
     }
   ],
   "require": {
@@ -17,6 +17,9 @@
     "guzzlehttp/guzzle": "~5.3|~6.0.1|~6.1",
     "guzzlehttp/psr7": "1.*",
     "guzzlehttp/promise": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
   },
   "autoload": {
     "psr-4": {
