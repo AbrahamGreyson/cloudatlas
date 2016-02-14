@@ -1,7 +1,6 @@
 <?php
 namespace CloudStorage\Contracts;
 
-
 /**
  * 表示执行特定 REST API 操作返回的结果。
  */

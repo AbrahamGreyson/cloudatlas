@@ -1,7 +1,6 @@
 <?php
 namespace CloudStorage\Credentials;
 
-
 use CloudStorage\Contracts\Arrayable;
 
 /**
@@ -10,7 +9,9 @@ use CloudStorage\Contracts\Arrayable;
  *
  * @package CloudStorage\Credentials
  */
-abstract class AbstractCredential implements CredentialsInterface, Arrayable,
+abstract class AbstractCredential implements
+    CredentialsInterface,
+    Arrayable,
     \Serializable
 {
     private $key;

@@ -1,7 +1,6 @@
 <?php
 namespace CloudStorage\Credentials;
 
-
 /**
  * 凭证提供者是一组不接受参数，并返回一个 promise，代表已完成的 {@see
  * \CloudStorage\Credentials\CredentialsInterface } 或已失败的 {@see
@@ -39,21 +38,17 @@ class CredentialProvider
 {
     public static function defaultProvider()
     {
-
     }
 
     public static function compose()
     {
-
     }
 
     public static function env()
     {
-
     }
 
     public static function ini()
     {
-
     }
 }

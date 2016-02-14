@@ -1,7 +1,7 @@
 <?php
 namespace CloudStorage\Contracts;
-use CloudStorage\HandlerList;
 
+use CloudStorage\HandlerList;
 
 /**
  * 一个命令对象，用来代表创建 HTTP 请求的输入参数以及处理 HTTP 响应。

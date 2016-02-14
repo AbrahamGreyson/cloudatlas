@@ -9,7 +9,7 @@ use League\Flysystem\Config;
  *
  * @package CloudStorage
  */
-class FlysystemAdapter extends AbstractAdapter
+class FlySystemAdapter extends AbstractAdapter
 {
     
     /**
