@@ -94,9 +94,9 @@ abstract class Client implements ClientInterface
         list($arguments['service'], $arguments['exceptionClass']) = $this->parseClass();
 
         $this->handlerList = new HandlerList();
-        // todo 传入参数和默认参数的合并
-        // 子类在这里签名中间件
-        //
+        $clientConstructor = new ClientConstructor([]);
+        $config = $clientConstructor->resolve($arguments, $this->handlerList);
+        $this->signatureProvider = $config['signatureProvider'];
     }
 
     /**
