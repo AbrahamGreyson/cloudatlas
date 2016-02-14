@@ -46,8 +46,8 @@ class ResultPaginator implements \Iterator
      * Checks if current position is valid
      *
      * @link  http://php.net/manual/en/iterator.valid.php
-     * @return boolean The return value will be casted to boolean and then evaluated.
-     *        Returns true on success or false on failure.
+     * @return boolean The return value will be casted to boolean and then
+     *                 evaluated. Returns true on success or false on failure.
      * @since 5.0.0
      */
     public function valid()
@@ -65,4 +65,5 @@ class ResultPaginator implements \Iterator
     public function rewind()
     {
         // TODO: Implement rewind() method.
-}}
+    }
+}
