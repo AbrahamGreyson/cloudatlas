@@ -9,8 +9,11 @@
 
 namespace CloudStorage;
 
+use CloudStorage\Credentials\CredentialProvider;
 use CloudStorage\Credentials\CredentialsInterface;
 use CloudStorage\Exceptions\CloudStorageException;
+use CloudStorage\Upyun\Credential;
+use GuzzleHttp\RetryMiddleware;
 
 /**
  * Class ClientConstructor
@@ -295,9 +298,48 @@ class ClientConstructor
         $expected = implode('|', $this->arguments[$name]['valid']);
         $msg = "Invalid configuration value "
             . "provided for \"{$name}\". Expected {$expected}, but got "
-            . descriptType($provided) . "\n\n"
+            . describeType($provided) . "\n\n"
             . $this->getArgMessage($name);
         throw new \InvalidArgumentException($msg);
+    }
+
+    public static function applyRetries($value, array &$arguments, HandlerList $list)
+    {
+        // todo
+        if ($value) {
+            $decider = \Aws\RetryMiddleware::createDefaultDecider($value);
+            $list->appendSign(Middleware::retry($decider), 'retry');
+        }
+    }
+
+    public static function applyCredentials($value, array &$arguments)
+    {
+        if (is_callable($value)) {
+            return;
+        } elseif ($value instanceof CredentialsInterface) {
+            $arguments['credentials'] = CredentialProvider::fromCredentials($value);
+        } elseif (is_array($value)
+            && isset($value['key'])
+            && isset($value['secret'])
+        ) {
+            $arguments['credentials'] = CredentialProvider::fromCredentials(
+                // todo
+                new Credentials(
+                    $value['key'],
+                    $value['secret']
+                )
+            );
+        } elseif (false === $value) {
+            $arguments['credentials'] = CredentialProvider::fromCredentials(
+                // todo
+                new Credentials('', '')
+            );
+        } else {
+            throw new \InvalidArgumentException('Credentials must be an instance of '
+                . 'CloudStorage\Credentials\CredentialsInterface, an associative '
+                . 'array that contains "key", "secret", and an optional "token" '
+                . 'key-value pairs, a credentials provider function, or false.');
+        }
     }
 
 }
