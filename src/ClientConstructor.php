@@ -12,10 +12,21 @@ namespace CloudStorage;
 use CloudStorage\Credentials\CredentialsInterface;
 use CloudStorage\Exceptions\CloudStorageException;
 
+/**
+ * Class ClientConstructor
+ *
+ * @package CloudStorage
+ */
 class ClientConstructor
 {
+    /**
+     * @var array
+     */
     private $arguments;
 
+    /**
+     * @var array
+     */
     private static $typeMap = [
         'resource' => 'is_resource',
         'callable' => 'is_callable',
@@ -26,6 +37,9 @@ class ClientConstructor
         'array'    => 'is_array',
     ];
 
+    /**
+     * @var array
+     */
     private static $defaultArguments = [
         'service'           => [
             'type'     => 'value',
@@ -101,22 +115,189 @@ class ClientConstructor
             'doc'   => '设置一个关联数组作为 CloudStorage 客户端每个请求的选项（例如 proxy，verify 等）。',
         ],
         'httpHandler'       => [
-            'type' => 'value',
+            'type'  => 'value',
             'valid' => ['callable'],
-            'fn' => [__CLASS__, 'applyHttpHandler'],
-            'doc' => 'HTTP 处理器是一个函数，接受 PSR-7 请求对象作为参数，返回一个 promise， 代表已完成的 PSR-7 响应对象或已失败的包含异常数据的数组。注意：这个选项将覆盖任何已有的 handler 选项。',
+            'fn'    => [__CLASS__, 'applyHttpHandler'],
+            'doc'   => 'HTTP 处理器是一个函数，接受 PSR-7 请求对象作为参数，返回一个 promise， 代表已完成的 PSR-7 响应对象或已失败的包含异常数据的数组。注意：这个选项将覆盖任何已有的 handler 选项。',
         ],
-        'handler' => [
-            'type' => 'value',
-            'valid' => ['callable'],
-            'fn' => [__CLASS__, 'applyHandler'],
+        'handler'           => [
+            'type'    => 'value',
+            'valid'   => ['callable'],
+            'fn'      => [__CLASS__, 'applyHandler'],
             'default' => [__CLASS__, 'applyDefaultHandler'],
-            'doc' => '处理器，接受 CloudStorage\\Contracts\\CommandInterface 和
+            'doc'     => '处理器，接受 CloudStorage\\Contracts\\CommandInterface 和
             PSR-7 请求对象作为参数，返回一个 promise， 代表已完成的
             CloudStorage\\Contracts\\ResultInterface 对象或已失败的
             CloudStorage\\Exceptions\\CloudStorageException
             。处理器并不接收下一个处理器，因为其是最终的，用来完成一个命令的函数。如果没有提供处理器，则使用默认的 Guzzle 处理器。',
         ],
     ];
+
+
+    /**
+     * 获得默认客户端配置选项的数组，每个包含下述内容：
+     *
+     * - type：（string，required）类型，支持下述值：
+     *   - value：默认的选项类型。
+     *   - config：提供的值在客户端的 getConfig() 方法中可以获取到。
+     * - valid：（array， required）有效的 PHP 类型或类名。注意：不允许 null 类型。
+     * - required：（bool，callable）参数是否是必须的。提供一个函数接受一个数组作为参数，
+     *              返回一个字符串作为自定义错误消息。
+     * - default：（mixed）如果没有提供参数值，则默认使用的。如果提供的是函数，则它将被调用
+     *             来提供默认值。提供给函数选项数组，函数应该返回选项的默认值。
+     * - fn：（callable）用来应用参数的函数。函数接受一个给定值，一个参数数组的引用，和一个
+     *        事件发射器（处理器列表）。
+     * - doc：（string）参数的文档内容。
+     *
+     * 注意：应用参数时顺序十分重要不可更改。
+     *
+     * @return array
+     */
+    public static function getDefaultArguments()
+    {
+        return self::$defaultArguments;
+    }
+
+    /**
+     * ClientConstructor constructor.
+     *
+     * @param array $arguments 客户端参数
+     */
+    public function __construct(array $arguments)
+    {
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * 解析客户端配置选项和附加的时间监听器。
+     *
+     * @param array       $arguments 客户端提供的构造参数。
+     * @param HandlerList $list      要配置的处理器列表。
+     *
+     * @return array 返回处理（和默认选项交叉）过的选项。
+     * @throws \InvalidArgumentException
+     * @see CloudStorage\Client::__construct 一组可用选项。
+     */
+    public function resolve(array $arguments, HandlerList $list)
+    {
+        $arguments['config'] = [];
+        foreach ($this->arguments as $key => $arg) {
+            // 为没有设置的选项添加默认值，验证必须的值，未设置必须则跳过。
+            if (!isset($arguments[$key])) {
+                if (isset($arg['default'])) {
+                    // 没有提供相应设置时，则使用默认值。
+                    $arguments[$key] = is_callable($arg['default'])
+                        ? $arg['default']($arguments)
+                        : $arg['default'];
+                } elseif (empty($arg['required'])) {
+                    continue;
+                } else {
+                    $this->throwRequired($arguments);
+                }
+            }
+
+            // 验证提供的选项类型符合预设
+            foreach ($arg['valid'] as $check) {
+                if (isset(self::$typeMap[$check])) {
+                    $fn = self::$typeMap[$check];
+                    if ($fn($arguments[$key])) {
+                        goto is_valid;
+                    }
+                } elseif ($arguments[$key] instanceof $check) {
+                    goto is_valid;
+                }
+            }
+            $this->invalidType($key, $arguments[$key]);
+
+            // 使用值
+            is_valid:
+            if (isset($arg['fn'])) {
+                $arg['fn']($arguments[$key], $arguments, $list);
+            }
+            if ($arg['type'] === 'config') {
+                $arguments['config'][$key] = $arguments[$key];
+            }
+
+            return $arguments;
+        }
+    }
+
+    /**
+     * 为缺失的必须参数抛出异常。
+     *
+     * @param array $arguments 传入参数。
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function throwRequired(array $arguments)
+    {
+        $missing = [];
+        foreach ($this->arguments as $key => $arg) {
+            if (empty($arg['required'])
+                || isset($arg['default'])
+                || array_key_exists($key, $arguments)
+            ) {
+                continue;
+            }
+            $missing[] = $this->getArgMessage($key, $arguments, true);
+        }
+        $msg = "Missing required client configuration options: \n\n";
+        $msg .= implode("\n\n", $missing);
+        throw new \InvalidArgumentException($msg);
+    }
+
+    /**
+     * 创建一个无效参数的详细错误信息。
+     *
+     * @param string $name       缺失的参数名称。
+     * @param array  $arguments  提供的参数。
+     * @param bool   $isRequired 设为 true 去显示必须的 fn 文本（如果有）而不是文档。
+     *
+     * @return string
+     */
+    private function getArgMessage($name, $arguments = [], $isRequired = false)
+    {
+        $arg = $this->arguments[$name];
+        $msg = '';
+        $modifiers = [];
+        if (isset($arg['valid'])) {
+            $modifiers[] = implode('|', $arg['valid']);
+        }
+        if (isset($arg['choice'])) {
+            $modifiers[] = 'One of ' . implode(', ', $arg['choice']);
+        }
+        if ($modifiers) {
+            $msg .= '(' . implode('; ', $modifiers) . ')';
+        }
+        $msg = wordwrap("{$name}: {$msg}", 75, "\n  ");
+
+        if ($isRequired && is_callable($arg['required'])) {
+            $msg .= "\n\n  ";
+            $msg .= str_replace("\n", "\n  ", call_user_func
+            ($arg['required'], $arguments));
+        } elseif (isset($arg['doc'])) {
+            $msg .= wordwrap("\n\n  {$arg['doc']}", 75, "\n  ");
+        }
+
+        return $msg;
+    }
+
+    /**
+     * 遇到无效类型时抛出。
+     *
+     * @param string $name     要被验证的参数名称。
+     * @param mixed  $provided 提供的值。
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function invalidType($name, $provided)
+    {
+        $expected = implode('|', $this->arguments[$name]['valid']);
+        $msg = "Invalid configuration value "
+            . "provided for \"{$name}\". Expected {$expected}, but got "
+            . descriptType($provided) . "\n\n"
+            . $this->getArgMessage($name);
+        throw new \InvalidArgumentException($msg);
+    }
 
 }
