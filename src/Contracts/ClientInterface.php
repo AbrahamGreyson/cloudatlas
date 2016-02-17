@@ -9,6 +9,8 @@
 
 namespace CloudStorage\Contracts;
 
+use CloudStorage\HandlerList;
+use CloudStorage\ResultPaginator;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\UriInterface;
 
@@ -65,7 +67,7 @@ interface ClientInterface
     public function executeAsync(CommandInterface $command);
 
     /**
-     * 返回一个已完成的 promise，代表已完成的 {@see CredentialsInterface} 对象。
+     * 返回一个 promise，代表已完成的 {@see CredentialsInterface} 对象。
      *
      * 如果你需要同步获得凭证，在返回的 promise 对象上调用 wait() 方法即可。
      *

@@ -46,8 +46,6 @@ abstract class Client implements ClientInterface
      */
     private $signatureProvider;
 
-
-
     /**
      * @var array
      */

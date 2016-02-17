@@ -7,7 +7,7 @@
  * @license: MIT
  */
 
-namespace CloudStorage\Api\Service;
+namespace CloudStorage\Api;
 
 class Service
 {
