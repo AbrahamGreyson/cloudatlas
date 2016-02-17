@@ -9,6 +9,10 @@
 
 namespace CloudStorage\Credentials;
 
+use Aws\Exception\CredentialsException;
+use CloudStorage\Upyun\Credential;
+use GuzzleHttp\Promise;
+
 /**
  * 凭证提供者是一组不接受参数，并返回一个 promise，代表已完成的 {@see
  * \CloudStorage\Credentials\CredentialsInterface } 或已失败的 {@see
@@ -40,12 +44,28 @@ namespace CloudStorage\Credentials;
  * // 同步等待凭证状态被取得。
  * $creds = $promise->wait();
  * </code>
+ *
  * @package CloudStorage\Credentials
  */
-class CredentialProvider
+abstract class AbstractCredentialProvider
 {
+    const ENV_KEY    = 'undefined';
+    const ENV_SECRET = 'undefined';
+
+    /**
+     * 创建默认凭证提供者，首先检查环境变量，然后检查 include_path 中的
+     * .cloudstorage/credentials 文件。
+     *
+     * 这个提供者被 memoize 方法包裹，用来缓存之前提供过的凭证。
+     *
+     * @return callable
+     */
     public static function defaultProvider()
     {
+        return self::chain(
+            self::env(),
+            self::ini()
+        );
     }
 
     public static function compose()
@@ -54,9 +74,59 @@ class CredentialProvider
 
     public static function env()
     {
+        /**
+         * @return mixed
+         */
+        return function () {
+            // 查找环境变量中的凭证
+            $key = getenv(static::ENV_KEY);
+            $secret = getenv(static::ENV_SECRET);
+            if ($key && $secret) {
+                return Promise\promise_for(
+                // todo static credential
+                    new Credential($key, $secret)
+                );
+            }
+
+            return self::reject('Could not find environment variable
+            credentials in ' . static::ENV_KEY . '/' . static::ENV_SECRET);
+        };
     }
 
     public static function ini()
     {
+    }
+
+
+    private static function reject($msg)
+    {
+        return new Promise\RejectedPromise(new CredentialsException($msg));
+    }
+
+    /**
+     * 请求内缓存。
+     *
+     * @param callable $provider
+     */
+    public static function memoize(callable $provider)
+    {
+    }
+
+    private static function chain()
+    {
+        $links = func_get_args();
+        if (empty($links)) {
+            throw new \InvalidArgumentException('No providers in chain.');
+        }
+
+        return function () use ($links) {
+            $parent = array_shift($links);
+            $promise = $parent();
+            while ($next = array_shift($links)) {
+                $promise = $promise->otherwise($next);
+            }
+
+            return $promise;
+        };
     }
 }

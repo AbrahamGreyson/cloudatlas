@@ -276,7 +276,7 @@ class HandlerList implements \Countable
      */
     public function after($search, $name, callable $middleware)
     {
-        $this->insert($search, $name, $middleware, false);
+        $this->insert($search, $name, $middleware);
     }
 
     /**
@@ -361,12 +361,12 @@ class HandlerList implements \Countable
     /**
      * 在中间件列表的特定位置插入一个新的中间件函数。
      *
-     * @param          $search
-     * @param          $name
+     * @param string   $search
+     * @param string   $name
      * @param callable $middleware
-     * @param          $before
+     * @param bool     $before
      */
-    private function insert($search, $name, callable $middleware, $before)
+    private function insert($search, $name, callable $middleware, $before = false)
     {
         if (!isset($this->named[$search])) {
             throw new \InvalidArgumentException("$search not found.");
@@ -480,7 +480,7 @@ class HandlerList implements \Countable
         if ($prepend) {
             $this->steps[$step][] = [$middleware, $name];
         } else {
-            array_unshift($this->steps[$step], [$middleware, name]);
+            array_unshift($this->steps[$step], [$middleware, $name]);
         }
 
         if ($name) {
