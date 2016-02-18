@@ -15,6 +15,7 @@ use CloudStorage\Contracts\ResultInterface;
 use CloudStorage\Exceptions\CloudStorageException;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -24,17 +25,17 @@ use Psr\Http\Message\UriInterface;
  *
  * @package CloudStorage
  */
-abstract class Client implements ClientInterface
+class Client implements ClientInterface
 {
-    /**
-     * @var string
-     */
-    private $endpoint;
-
     /**
      * @var Service
      */
     private $api;
+
+    /**
+     * @var array
+     */
+    private $config;
 
     /**
      * @var callable
@@ -47,14 +48,19 @@ abstract class Client implements ClientInterface
     private $signatureProvider;
 
     /**
-     * @var array
+     * @var Uri|string
      */
-    private $defaultRequestOptions;
+    private $endpoint;
 
     /**
      * @var HandlerList
      */
     private $handlerList;
+
+    /**
+     * @var array
+     */
+    private $defaultRequestOptions;
 
     /**
      * 客户端构造方法接受一个关联数组作为参数，以下是关联数组的可用选项：
@@ -94,8 +100,21 @@ abstract class Client implements ClientInterface
         $this->handlerList = new HandlerList();
         $clientConstructor = new ClientConstructor([]);
         $config = $clientConstructor->resolve($arguments, $this->handlerList);
+        $this->api = $config['api'];
+        $this->credentialProvider = $config['credentialProvider'];
         $this->signatureProvider = $config['signatureProvider'];
+        $this->endpoint = new Uri($config['endpoint']);
+        $this->config = $config['config'];
+        $this->defaultRequestOptions = $config['http'];
+        $stack = static::getHandlerList();
+        static::addSignatureMiddleware();
+        //static::
     }
+
+    /**
+     * @return mixed
+     */
+    // abstract public function addSignatureMiddleware();
 
     /**
      * 根据名称创建并执行一个 REST API 操作命令。
