@@ -42,5 +42,4 @@ class UpyunClient extends Client
     public function addSignatureMiddleware()
     {
     }
-
 }
