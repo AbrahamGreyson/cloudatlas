@@ -38,4 +38,9 @@ class UpyunClient extends Client
     {
         // TODO: Implement getPaginator() method.
     }
+
+    public function addSignatureMiddleware()
+    {
+    }
+
 }

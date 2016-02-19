@@ -119,8 +119,8 @@ class Client implements ClientInterface
     /**
      * 根据名称创建并执行一个 REST API 操作命令。
      *
-     * @param       $name
-     * @param array $arguments
+     * @param string $name
+     * @param array  $arguments
      *
      * @return mixed
      */

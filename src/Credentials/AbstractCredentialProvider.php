@@ -120,6 +120,7 @@ abstract class AbstractCredentialProvider
         }
 
         return function () use ($links) {
+            /** @var callable $parent */
             $parent = array_shift($links);
             $promise = $parent();
             while ($next = array_shift($links)) {
