@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * CloudStorage
+ * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * @author: AbrahamGreyson <82011220@qq.com>
+ * @license: MIT
+ */
+
 namespace CloudStorage\Api;
 
 use Aws\Api\ShapeMap;
@@ -60,5 +67,4 @@ abstract class AbstractModel implements \ArrayAccess, \Countable, Arrayable
     protected function shapeFor(array $definition)
     {
     }
-
 }

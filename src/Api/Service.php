@@ -43,7 +43,5 @@ class Service extends AbstractModel
         $definition += $default;
         $definition['metadata'] += $defaultMeta;
         $this->apiProvider = $provider;
-
     }
-
 }
