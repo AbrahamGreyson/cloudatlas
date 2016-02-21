@@ -42,13 +42,14 @@ function describeType($input)
  */
 function manifest($service = null)
 {
-    // 载入 API 清单并为小写命名空间创建别名
+    // 载入 API 清单并为命名空间的小写创建别名。
     static $manifest = [];
     static $aliases = [];
     if (empty($manifest)) {
-        $manifest = require('./Api/data/manifest.php');
+        $manifest = require(__DIR__ . './Api/data/manifest.php');
         foreach ($manifest as $endpoint => $info) {
             $alias = strtolower($info['namespace']);
+            // todo endpoint
             if ($alias !== $endpoint) {
                 $aliases[$alias] = $endpoint;
             }
@@ -60,9 +61,10 @@ function manifest($service = null)
         return $manifest;
     }
 
-    // 检查 API 清单中的服务信息。
+    // 检查 API 清单中的服务返回对应数据。
     $service = strtolower($service);
     if (isset($manifest[$service])) {
+        // todo endpoint
         return $manifest[$service] + ['endpoint' => $service];
     } elseif (isset($aliases[$service])) {
         return manifest($aliases[$service]);
