@@ -13,7 +13,7 @@ use Aws\Api\ShapeMap;
 use CloudStorage\Contracts\Arrayable;
 
 /**
- * API 形态基类
+ * API 基类。
  *
  * @package CloudStorage\Api
  */
@@ -31,7 +31,6 @@ abstract class AbstractModel implements \ArrayAccess, \Countable, Arrayable
 
     public function toArray()
     {
-        // TODO: Implement toArray() method.
     }
 
     public function count()
