@@ -16,5 +16,4 @@ namespace CloudStorage\Api;
  */
 class Operation
 {
-    
 }
