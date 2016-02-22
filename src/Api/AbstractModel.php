@@ -9,7 +9,6 @@
 
 namespace CloudStorage\Api;
 
-use Aws\Api\ShapeMap;
 use CloudStorage\Contracts\Arrayable;
 
 /**
@@ -19,10 +18,20 @@ use CloudStorage\Contracts\Arrayable;
  */
 abstract class AbstractModel implements \ArrayAccess, \Countable, Arrayable
 {
+    /**
+     * @var array
+     */
     protected $definition;
 
+    /**
+     * @var ShapeMap
+     */
     protected $shapeMap;
 
+    /**
+     * @param array    $definition 服务描述。
+     * @param ShapeMap $shapeMap   用来创建形状的形状表。
+     */
     public function __construct(array $definition, ShapeMap $shapeMap)
     {
         $this->definition = $definition;
@@ -31,6 +40,7 @@ abstract class AbstractModel implements \ArrayAccess, \Countable, Arrayable
 
     public function toArray()
     {
+        return $this->definition;
     }
 
     public function count()
@@ -61,9 +71,19 @@ abstract class AbstractModel implements \ArrayAccess, \Countable, Arrayable
 
     protected function shapeAt($key)
     {
+        if (!isset($this->definition[$key])) {
+            throw new \InvalidArgumentException(
+                "Expected shape definition at {$key}"
+            );
+        }
+
+        return $this->shapeFor($this->definition[$key]);
     }
 
     protected function shapeFor(array $definition)
     {
+        return isset($definition['shape'])
+            ? $this->shapeMap->resolve($definition)
+            : Shape::create($definition, $this->shapeMap);
     }
 }
