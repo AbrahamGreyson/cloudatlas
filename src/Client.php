@@ -98,7 +98,7 @@ class Client implements ClientInterface
         list($arguments['service'], $arguments['exceptionClass']) = $this->parseClass();
 
         $this->handlerList = new HandlerList();
-        $clientConstructor = new ClientConstructor([]);
+        $clientConstructor = new ClientConstructor(static::getDefaultArguments());
         $config = $clientConstructor->resolve($arguments, $this->handlerList);
         $this->api = $config['api'];
         $this->credentialProvider = $config['credentialProvider'];
@@ -109,6 +109,15 @@ class Client implements ClientInterface
         $stack = static::getHandlerList();
         static::addSignatureMiddleware();
         //static::
+    }
+
+    /**
+     * 获取默认的客户端构造参数用于实例化客户端。
+     * @return array
+     */
+    public static function getDefaultArguments()
+    {
+        return ClientConstructor::getDefaultArguments();
     }
 
     /**
@@ -301,7 +310,7 @@ class Client implements ClientInterface
      */
     public function getApi()
     {
-        // TODO: Implement getApi() method.
+        return $this->api;
     }
 
     /**
