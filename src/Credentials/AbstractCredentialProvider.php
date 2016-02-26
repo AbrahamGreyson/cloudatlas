@@ -9,6 +9,7 @@
 
 namespace CloudStorage\Credentials;
 
+use Aws\Credentials\Credentials;
 use Aws\Exception\CredentialsException;
 use CloudStorage\Upyun\Credential;
 use GuzzleHttp\Promise;
@@ -16,103 +17,148 @@ use GuzzleHttp\Promise;
 /**
  * 凭证提供者是一组不接受参数，并返回一个 promise，代表已完成的 {@see
  * \CloudStorage\Credentials\CredentialsInterface } 或已失败的 {@see
- * \CloudStorage\Exceptions\CloudStorageException} 的方法。
+ * \CloudStorage\Exceptions\CloudStorageException} 的函数。
  *
  * <code>
- * use CloudStorage\Credentials\CredentialProvider;
- * $provider = CredentialProvider::defaultProvider();
+ * use CloudStorage\Credentials\AbstractCredentialProvider;
+ * $provider = AbstractCredentialProvider::defaultProvider();
  * // 返回 CredentialsInterface 或抛异常。
  * $creds = $provider()->wait();
  * </code>
  *
  * 凭证提供者可以被有条件的组合到一起，以便在不同环境中使用不同的凭证。可以通过使用 {@see
- * \CloudStorage\Credentials\CredentialProvider::compose} 组合多个提供者至单独
- * 一个提供者内。这个方法接受一个提供者作为参数，并返回一个新的函数，新的函数将调用每一个提供者
+ * \CloudStorage\Credentials\AbstractCredentialProvider::chain()} 组合多个提供者至
+ * 单独一个提供者内。这个方法接受一个提供者作为参数，并返回一个新的函数，新的函数将调用每一个提供者
  * 直到一组凭证被成功返回。
  *
  * <code>
  * // 首先从特定 INI 配置文件中加载凭证。
- * $a = CredentialProvider::ini(null, '/path/to/file.ini');
+ * $a = AbstractCredentialProvider::ini(null, '/path/to/file.ini');
  * // 然后从另一个 INI 配置文件中加载凭证。
- * $b = CredentialProvider::ini(null, 'path/to/other-file.ini');
+ * $b = AbstractCredentialProvider::ini(null, 'path/to/other-file.ini');
  * // 然后从环境变量中加载。
- * $c = CredentialProvider::env();
+ * $c = AbstractCredentialProvider::env();
  * // 组合它们到一起（返回一个在内部调用每个凭证提供者，直到成功获取凭证的函数）。
- * $composed = CredentialProvider()::compose($a, $b, $c);
+ * $composed = AbstractCredentialProvider::chain($a, $b, $c);
  * // 返回一个 promise，代表已完成的凭证或抛出异常（已失败）。
  * $promise = $composed();
  * // 同步等待凭证状态被取得。
  * $creds = $promise->wait();
  * </code>
  *
+ * 如果凭证来自环境变量、配置文件或构造参数以外的地方，可以使用
+ * {@see AbstractCredentialProvider::extend()} 方法扩展凭证提供者，该方法接受一个字符串
+ * 类型的提供者名称和一个 callable 类型的参数，callable 返回一个 promise，promise 代表
+ * 什么参见本文档块最开始的段落。
+ * 一旦扩展凭证提供者之后，你就可以使用 AbstractCredentialProvider::name() 去在任何地方
+ * 使用这个凭证提供者。
+ *
+ * <code>
+ * AbstractCredentialProvider::extend('yaconf', function(){
+ *      // 首先从 yaconf 中取得 key 和 secret。
+ *      return function () {
+ *          return Promise\promise_for(
+ *              new Credentials($key, $secret)
+ *          );
+ *      };
+ * });
+ * </code>
+ *
  * @package CloudStorage\Credentials
  */
 abstract class AbstractCredentialProvider
 {
-    const ENV_KEY    = 'undefined';
-    const ENV_SECRET = 'undefined';
+    const ENV_KEY     = 'undefined';
+    const ENV_SECRET  = 'undefined';
+    const ENV_PROFILE = 'CLOUDSTORAGE_PROFILE';
+
+
+    /**
+     * @var array 自定义的凭证提供者。
+     */
+    protected static $extensions = [];
 
     /**
      * 创建默认凭证提供者，首先检查环境变量，然后检查 include_path 中的
      * .cloudstorage/credentials 文件。
      *
-     * 这个提供者被 memoize 方法包裹，用来缓存之前提供过的凭证。
+     * // todo 这个提供者被 memoize 方法包裹，用来缓存之前提供过的凭证。
      *
      * @return callable
      */
     public static function defaultProvider()
     {
-        return self::chain(
-            self::env(),
-            self::ini()
+        return self::memoize(
+            self::chain(
+                self::env(),
+                self::ini()
+            )
         );
     }
 
-    public static function compose()
+    /**
+     * 从静态凭证创建凭证提供者。
+     *
+     * @param CredentialsInterface $credentials
+     *
+     * @return callback
+     */
+    public static function fromCredentials(CredentialsInterface $credentials)
     {
-    }
+        $promise = Promise\promise_for($credentials);
 
-    public static function env()
-    {
-        /**
-         * @return mixed
-         */
-        return function () {
-            // 查找环境变量中的凭证
-            $key = getenv(static::ENV_KEY);
-            $secret = getenv(static::ENV_SECRET);
-            if ($key && $secret) {
-                return Promise\promise_for(
-                // todo static credential
-                    new Credential($key, $secret)
-                );
-            }
-
-            return self::reject('Could not find environment variable
-            credentials in ' . static::ENV_KEY . '/' . static::ENV_SECRET);
+        return function () use ($promise) {
+            return $promise;
         };
     }
 
-    public static function ini()
+    /**
+     * 扩展自定义的凭证提供者。
+     *
+     * @param  string  $name
+     * @param callable $provider
+     */
+    public static function extend($name, callable $provider)
     {
-    }
-
-
-    private static function reject($msg)
-    {
-        return new Promise\RejectedPromise(new CredentialsException($msg));
+        static::$extensions[$name] = $provider;
     }
 
     /**
-     * 请求内缓存。
+     * 返回自定义凭证提供者或抛出异常。
      *
-     * @param callable $provider
+     * @param string   $name
+     * @param callable $arguments
+     *
+     * @return callable 凭证提供者。
+     * @throws \BadMethodCallException 提供者未找到。
      */
-    public static function memoize(callable $provider)
+    public static function __callStatic($name, $arguments)
     {
+        if (isset(static::$extensions[$name])) {
+            return static::getExtension($name);
+        }
+
+        throw new \BadMethodCallException(
+            "Provider is not exists: {$name}"
+        );
     }
 
-    private static function chain()
+    /**
+     * 自定义凭证提供者。
+     *
+     * @param $name
+     *
+     * @return callable
+     */
+    protected static function getExtension($name)
+    {
+        return static::$extensions[$name];
+    }
+
+    /**
+     * 组合多个凭证来源，直至返回一个可用凭证。
+     */
+    public static function chain()
     {
         $links = func_get_args();
         if (empty($links)) {
@@ -130,4 +176,122 @@ abstract class AbstractCredentialProvider
             return $promise;
         };
     }
+
+    /**
+     * 环境变量凭证提供者，从环境变量中创建凭证。
+     *
+     * 不同的云服务，环境变量名不同，这就要求子类覆写本类的常量，把对应的 ENV_KEY 和
+     * ENV_SECRET 名称指定为特定云服务的。
+     *
+     * @return callable
+     */
+    public static function env()
+    {
+        return function () {
+            // 查找环境变量中的凭证
+            $key = getenv(constant(static::ENV_KEY));
+            $secret = getenv(constant(static::ENV_SECRET));
+            if ($key && $secret) {
+                return Promise\promise_for(
+                // todo static credential
+                    new Credential($key, $secret)
+                );
+            }
+
+            return self::reject('Could not find environment variable
+            credentials in ' . static::ENV_KEY . '/' . static::ENV_SECRET);
+        };
+    }
+
+
+    public static function ini($profile = null, $filename = null)
+    {
+        $filename = $filename ?: './.cloudstorage/credentials';
+        $profile = $profile ?: (getenv(self::ENV_PROFILE) ?: 'default');
+
+        return function () use ($profile, $filename) {
+            if (!is_readable($filename)) {
+                return self::reject("Cannot read credentials from {$filename}");
+            }
+
+            $data = parse_ini_file($filename, true);
+            if ($data === false) {
+                return self::reject("Invalid credentials file: {$filename}");
+            }
+            if (!isset($data[$profile])) {
+                return self::reject("'{$profile}' not found in credentials file.");
+            }
+            if (!isset($data[$profile][constant(static::ENV_KEY)])
+                || !isset($data[$profile][constant(static::ENV_SECRET)])
+            ) {
+                return self::reject("No credentials present in INI profile "
+                    . "'{$profile}' ($filename)");
+            }
+
+            return Promise\promise_for(
+                new Credentials(
+                    $data[$profile][constant(static::ENV_KEY)],
+                    $data[$profile][constant(static::ENV_SECRET)]
+                )
+            );
+        };
+    }
+
+    private static function reject($msg)
+    {
+        return new Promise\RejectedPromise(new CredentialsException($msg));
+    }
+
+    /**
+     * 缓存凭证提供者，避免内存还没释放，却重新获取凭证。
+     *
+     * 确保凭证过期时会刷新。
+     *
+     * @param callable $provider
+     *
+     * @return callable
+     */
+    public static function memoize(callable $provider)
+    {
+        return function () use ($provider) {
+            static $result;
+            static $isConstant;
+
+            // 无过期的凭证直接返回。
+            if ($isConstant) {
+                return $result;
+            }
+
+            // 创建内部 promise 作为过期前的缓存值。
+            if (null === $result) {
+                /** @var \GuzzleHttp\Promise\Promise $result */
+                $result = $provider();
+            }
+
+            // 返回一个过期时可以刷新的凭证。
+            return $result->then(
+                function (CredentialsInterface $credentials) use (
+                    $provider, &$isConstant, &$result
+                ) {
+                    // 判断是否是无过期凭证。
+                    if (!method_exists($credentials, 'getExpiration')
+                        || !$credentials->getExpiration()
+                    ) {
+                        $isConstant = true;
+
+                        return $credentials;
+                    }
+
+                    // 未过期就返回。
+                    if (!$credentials->isExpired()) {
+                        return $credentials;
+                    }
+
+                    // 过期就刷新。
+                    return $result = $provider();
+                }
+            );
+        };
+    }
+
 }
