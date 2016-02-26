@@ -17,7 +17,7 @@ use CloudStorage\Contracts\Arrayable;
  *
  * @package CloudStorage\Credentials
  */
-abstract class AbstractCredential implements
+abstract class AbstractCredentials implements
     CredentialsInterface,
     Arrayable,
     \Serializable

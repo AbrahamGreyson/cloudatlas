@@ -9,8 +9,8 @@
 
 namespace CloudStorage\Upyun;
 
-use CloudStorage\Credentials\AbstractCredential;
+use CloudStorage\Credentials\AbstractCredentials;
 
-class Credential extends AbstractCredential
+class Credential extends AbstractCredentials
 {
 }
