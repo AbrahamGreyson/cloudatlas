@@ -293,5 +293,4 @@ abstract class AbstractCredentialProvider
             );
         };
     }
-
 }
