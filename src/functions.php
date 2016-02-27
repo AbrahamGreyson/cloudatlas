@@ -74,3 +74,33 @@ function manifest($service = null)
         );
     }
 }
+
+/**
+ * 返回一个函数，函数中依次调用传入的可变函数直到返回一个非空值。函数依次调用传入可变函数时，将
+ * 会使用对应的参数。
+ *
+ * <code>
+ * $a = function ($x, $y) { return null; }
+ * $b = function ($x, $y) { return $x + $y; }
+ * $fn = \CloudStorage\orChain($a, $b);
+ * echo $fn(1, 2); // 3
+ * </code>
+ *
+ * @return callable
+ */
+function orChain()
+{
+    $fns = func_get_args();
+
+    return function () use ($fns) {
+        $args = func_get_args();
+        foreach ($fns as $fn) {
+            $result = $args ? call_user_func_array($fn, $args) : $fn();
+            if ($result) {
+                return $result;
+            }
+        }
+
+        return null;
+    };
+}
