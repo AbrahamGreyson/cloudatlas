@@ -2,9 +2,11 @@ SDK
 ===============
 
 [![StyleCI](https://styleci.io/repos/50803540/shield)](https://styleci.io/repos/50803540)
-
-
-
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/abraham-greyson/cloudstorage/version)](https://packagist.org/packages/abraham-greyson/cloudstorage)
+[![Latest Unstable Version](https://poser.pugx.org/abraham-greyson/cloudstorage/v/unstable)](https://packagist.org/packages/abraham-greyson/cloudstorage)
+[![License](https://poser.pugx.org/abraham-greyson/cloudstorage/license)](https://packagist.org/packages/abraham-greyson/cloudstorage)
 
 
 <!-- ## 特性 
