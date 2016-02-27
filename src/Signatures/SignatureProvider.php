@@ -10,7 +10,6 @@
 namespace CloudStorage\Signatures;
 
 use CloudStorage\Exceptions\UnresolvedSignatureException;
-use CloudStorage\Upyun\BasicSignature;
 
 /**
  * 签名提供者。
@@ -19,8 +18,8 @@ use CloudStorage\Upyun\BasicSignature;
  * 提供的参数无法创建签名，则返回 null。
  *
  * 你可以使用 {@see SignatureProvider::resolve} 包装对签名提供者的调用，去确保签名对象
- * 已经被创建。如果无法创建签名对象，则 resolve() 方法会抛出异常
- * {@see CloudStorage\Exceptions\UnresolvedSignatureException}。
+ * 已经被创建。如果无法创建签名对象，则 resolve() 方法会抛出
+ * {@see CloudStorage\Exceptions\UnresolvedSignatureException} 异常。
  *
  * <code>
  * use CloudStorage\Signatures\SignatureProvider;
@@ -81,7 +80,7 @@ class SignatureProvider
 
         throw new UnresolvedSignatureException(
             "Unable to resolve a signature for $version/$service. \n"
-            . "Valid signature versions include v1 and anonymous."
+            . "Valid signature versions include v1, basic and anonymous."
         );
     }
 
@@ -111,6 +110,8 @@ class SignatureProvider
      *
      * 这个提供者目前提供以下签名版本。
      *
+     * // todo 允许对版本进行拓展。
+     *
      * - v1: 签名版本 v1，在各个云服务没有指定签名版本时，这就是默认的。
      * - anonymous: 并不签名请求。
      *
@@ -119,13 +120,18 @@ class SignatureProvider
     public static function version()
     {
         return function ($version, $service) {
-            switch ($version) {
-                case 'v1':
-                    return new BasicSignature();
-                case 'anonymous':
-                    return new AnonymousSignature();
-                default:
-                    return null;
+            $namespace = "\\CloudStorage\\" . ucfirst($service);
+            $defaultSignature = $namespace . '\\Signature';
+            $basicSignature = $namespace . '\\BasicSignature';
+            if ('v1' === $version && class_exists($defaultSignature)) {
+                return new $defaultSignature;
+            } elseif ('basic' === $version && class_exists($basicSignature)) {
+                return new $basicSignature;
+            } elseif ('anonymous' === $version) {
+                // todo anonymous signature.
+                return new \StdClass;
+            } else {
+                return null;
             }
         };
     }
