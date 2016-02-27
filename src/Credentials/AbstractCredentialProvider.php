@@ -9,9 +9,7 @@
 
 namespace CloudStorage\Credentials;
 
-use Aws\Credentials\Credentials;
-use Aws\Exception\CredentialsException;
-use CloudStorage\Upyun\Credential;
+use CloudStorage\Exceptions\CredentialsException;
 use GuzzleHttp\Promise;
 
 /**
@@ -66,11 +64,13 @@ use GuzzleHttp\Promise;
  *
  * @package CloudStorage\Credentials
  */
-abstract class AbstractCredentialProvider
+abstract class AbstractCredentialProvider implements CredentialProviderInterface
 {
     const ENV_KEY     = 'undefined';
     const ENV_SECRET  = 'undefined';
     const ENV_PROFILE = 'CLOUDSTORAGE_PROFILE';
+
+    protected static $service = null;
 
 
     /**
@@ -81,8 +81,6 @@ abstract class AbstractCredentialProvider
     /**
      * 创建默认凭证提供者，首先检查环境变量，然后检查 include_path 中的
      * .cloudstorage/credentials 文件。
-     *
-     * // todo 这个提供者被 memoize 方法包裹，用来缓存之前提供过的凭证。
      *
      * @return callable
      */
@@ -120,7 +118,11 @@ abstract class AbstractCredentialProvider
      */
     public static function extend($name, callable $provider)
     {
-        static::$extensions[$name] = $provider;
+        // 为了防止静态属性指向基类那唯一的值（子类一处修改，则处处修改），
+        // 我们用被调用的类名作为数组的 key，这样不同的子类，例如 UpyunCredentialProvider
+        // 或 QiniuCredentialProvider 可以单独扩展凭证提供者。
+        $key = get_called_class();
+        static::$extensions[$key][$name] = $provider;
     }
 
     /**
@@ -134,8 +136,9 @@ abstract class AbstractCredentialProvider
      */
     public static function __callStatic($name, $arguments)
     {
-        if (isset(static::$extensions[$name])) {
-            return static::getExtension($name);
+        $key = get_called_class();
+        if (isset(static::$extensions[$key][$name])) {
+            return static::$extensions[$key][$name];
         }
 
         throw new \BadMethodCallException(
@@ -144,19 +147,9 @@ abstract class AbstractCredentialProvider
     }
 
     /**
-     * 自定义凭证提供者。
-     *
-     * @param $name
+     * 组合多个凭证来源，直至返回一个可用凭证。
      *
      * @return callable
-     */
-    protected static function getExtension($name)
-    {
-        return static::$extensions[$name];
-    }
-
-    /**
-     * 组合多个凭证来源，直至返回一个可用凭证。
      */
     public static function chain()
     {
@@ -170,6 +163,7 @@ abstract class AbstractCredentialProvider
             $parent = array_shift($links);
             $promise = $parent();
             while ($next = array_shift($links)) {
+                /** @var \GuzzleHttp\Promise\Promise $promise */
                 $promise = $promise->otherwise($next);
             }
 
@@ -187,29 +181,38 @@ abstract class AbstractCredentialProvider
      */
     public static function env()
     {
-        return function () {
+        $credentialConcrete = static::getCredentialConcrete();
+
+        return function () use ($credentialConcrete) {
             // 查找环境变量中的凭证
-            $key = getenv(constant(static::ENV_KEY));
-            $secret = getenv(constant(static::ENV_SECRET));
+            $key = getenv(static::ENV_KEY);
+            $secret = getenv(static::ENV_SECRET);
             if ($key && $secret) {
                 return Promise\promise_for(
-                // todo static credential
-                    new Credential($key, $secret)
+                    new $credentialConcrete($key, $secret)
                 );
             }
 
-            return self::reject('Could not find environment variable
-            credentials in ' . static::ENV_KEY . '/' . static::ENV_SECRET);
+            return self::reject('Could not find environment variable credentials in ' .
+                static::ENV_KEY . '/' . static::ENV_SECRET);
         };
     }
 
-
+    /**
+     * todo ini 文件加载
+     *
+     * @param null $profile
+     * @param null $filename
+     *
+     * @return \Closure
+     */
     public static function ini($profile = null, $filename = null)
     {
         $filename = $filename ?: './.cloudstorage/credentials';
         $profile = $profile ?: (getenv(self::ENV_PROFILE) ?: 'default');
+        $credentialConcrete = static::getCredentialConcrete();
 
-        return function () use ($profile, $filename) {
+        return function () use ($profile, $filename, $credentialConcrete) {
             if (!is_readable($filename)) {
                 return self::reject("Cannot read credentials from {$filename}");
             }
@@ -229,7 +232,7 @@ abstract class AbstractCredentialProvider
             }
 
             return Promise\promise_for(
-                new Credentials(
+                new $credentialConcrete(
                     $data[$profile][constant(static::ENV_KEY)],
                     $data[$profile][constant(static::ENV_SECRET)]
                 )
@@ -237,6 +240,13 @@ abstract class AbstractCredentialProvider
         };
     }
 
+    /**
+     * 已失败的 promise 封装。
+     *
+     * @param string $msg 异常信息。
+     *
+     * @return Promise\RejectedPromise
+     */
     private static function reject($msg)
     {
         return new Promise\RejectedPromise(new CredentialsException($msg));
@@ -283,7 +293,9 @@ abstract class AbstractCredentialProvider
                     }
 
                     // 未过期就返回。
-                    if (!$credentials->isExpired()) {
+                    if (!method_exists($credentials, 'isExpired')
+                        || !$credentials->isExpired()
+                    ) {
                         return $credentials;
                     }
 
