@@ -51,12 +51,27 @@ use CloudStorage\Upyun\BasicSignature;
  */
 class SignatureProvider
 {
+    /**
+     * 返回各个服务默认的签名提供者。
+     *
+     * @return callable
+     */
     public static function defaultProvider()
     {
         // todo version split
         return self::memoize(self::version());
     }
 
+    /**
+     * 分解签名提供者，确保返回的是非空值。
+     *
+     * @param callable $provider 要调用的签名提供者。
+     * @param string   $version  签名版本。
+     * @param string   $service  服务名称。
+     *
+     * @return SignatureInterface
+     * @throws UnresolvedSignatureException
+     */
     public static function resolve(callable $provider, $version, $service)
     {
         $result = $provider($version, $service);
@@ -70,6 +85,13 @@ class SignatureProvider
         );
     }
 
+    /**
+     * 创建一个缓存有之前签名对象的签名提供者。缓存 key 由签名版本，服务名组成。
+     *
+     * @param callable $provider 要包装的签名提供者。
+     *
+     * @return callable
+     */
     public static function memoize(callable $provider)
     {
         $cache = [];
@@ -84,6 +106,16 @@ class SignatureProvider
         };
     }
 
+    /**
+     * 从已知的签名版本中创建签名对象。
+     *
+     * 这个提供者目前提供以下签名版本。
+     *
+     * - v1: 签名版本 v1，在各个云服务没有指定签名版本时，这就是默认的。
+     * - anonymous: 并不签名请求。
+     *
+     * @return callable
+     */
     public static function version()
     {
         return function ($version, $service) {
