@@ -12,12 +12,14 @@ namespace CloudStorage\Api;
 use CloudStorage\Exceptions\UnresolvedApiException;
 
 /**
- * API 提供者。是一个接收分类（如 api，paginator，waiter），服务名称（如 upyun，qiniu）
+ * API 提供者。
+ *
+ * 是一个函数，它接收分类（如 api，paginator，waiter），服务名称（如 upyun，qiniu）
  * 和版本，并返回一个 API 数据的数组。如果提供的信息找不到对应 API 数据则返回 null。
  *
- * 你可以使用 {@see Apiprovider::resolve} 方法包裹 API 提供者去确保 API 数据已经得到。
- * 如果没有找到 API 数据，则该方法会抛出
- * {@see \CloudStorage\Exceptions\UnresolvedApiException} 异常。
+ * 你可以使用 {@see Apiprovider::resolve} 方法包装调用的 API 提供者去确保 API 数据已经
+ * 被创建。如果没有创建 API 数据，则该方法会抛出
+ * {@see CloudStorage\Exceptions\UnresolvedApiException} 异常。
  *
  * <code>
  * use CloudStorage\Api\ApiProvider;
@@ -28,7 +30,7 @@ use CloudStorage\Exceptions\UnresolvedApiException;
  * $data = ApiProvider::resolve($provider, 'api', 'upyun', 'v1');
  * </code>
  *
- * 你可以使用 {@see \CloudStorage\orChain} 函数组合多个提供者至单独的一个。这个函数接受
+ * 可以使用 {@see CloudStorage\orChain} 函数组合多个提供者至单独的一个。这个函数接受
  * 提供者作为参数，返回一个将会依次调用所有提供者直到非空值被返回的函数。
  *
  * <code>
@@ -36,9 +38,9 @@ use CloudStorage\Exceptions\UnresolvedApiException;
  * $b = ApiProvider::manifest();
  *
  * $c = \CloudStorage\orChain($a, $b);
- * $data = $c('api', 'testApi', 'v1'); // $a 处理这个
- * $data = $c('api', 'qiniu', 'v1'); // $b 处理这个
- * $data = $c('api', 'invalid', '2099-12-31'); // 哪个都不能处理无效的 API 数据请求
+ * $data = $c('api', 'testApi', 'v1'); // $a 处理这个。
+ * $data = $c('api', 'qiniu', 'v1'); // $b 处理这个。
+ * $data = $c('api', 'invalid', '2099-12-31'); // 哪个都不能处理无效的 API 数据请求。
  * </code>
  *
  * @package CloudStorage\Api
@@ -200,10 +202,10 @@ class ApiProvider
         }
 
         $version = $this->manifest[$service]['versions'][$version];
-        $path = "{$this->modelsDir}/{$service}/{$version}/{$type}.json";
+        $path = "{$this->modelsDir}/{$service}/{$version}/{$type}.php";
 
         try {
-            return \Aws\load_compiled_json($path);
+            return \CloudStorage\loadApiFileOrThrow($path);
         } catch (\InvalidArgumentException $e) {
             return null;
         }
@@ -221,21 +223,21 @@ class ApiProvider
         if (!is_dir($dir)) {
             return;
         }
-
         // 取得版本号，移除 . 和 .. 并降序排列。
         $results = array_diff(scandir($dir, SCANDIR_SORT_DESCENDING), [
             '..',
             '.']);
 
         if (!$results) {
-            $this->manifest[$service] = ['version' => []];
+            $this->manifest[$service] = ['versions' => []];
         } else {
             $this->manifest[$service] = [
-                'version' => [
-                    'lastest' => $results[0],
+                'versions' => [
+                    'latest' => $results[0],
                 ],
             ];
             $this->manifest[$service]['versions'] += array_combine($results, $results);
+            dd($this->manifest);
         }
     }
 }

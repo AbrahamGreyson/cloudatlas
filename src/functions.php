@@ -104,3 +104,21 @@ function orChain()
         return null;
     };
 }
+
+/**
+ * 载入 API 配置文件返回其中数组。
+ *
+ * @param string $path 要载入的文件。
+ *
+ * @return array API 配置关联数组。
+ * @throws \InvalidArgumentException 没找到文件或文件不可读。
+ */
+function loadApiFileOrThrow($path)
+{
+    if (file_exists($path) && $apis = @include("$path")) {
+        return $apis;
+    }
+    throw new \InvalidArgumentException(
+        sprintf("File not found or can not be read: %s", $path)
+    );
+}
