@@ -57,7 +57,6 @@ class SignatureProvider
      */
     public static function defaultProvider()
     {
-        // todo version split
         return self::memoize(self::version());
     }
 
@@ -109,8 +108,6 @@ class SignatureProvider
      * 从已知的签名版本中创建签名对象。
      *
      * 这个提供者目前提供以下签名版本。
-     *
-     * // todo 允许对版本进行拓展。
      *
      * - v1: 签名版本 v1，在各个云服务没有指定签名版本时，这就是默认的。
      * - anonymous: 并不签名请求。
