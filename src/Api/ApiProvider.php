@@ -110,19 +110,6 @@ class ApiProvider
     }
 
     /**
-     * todo
-     *
-     * @param       $dir
-     * @param array $manifest
-     *
-     * @return ApiProvider
-     */
-    public static function manifest($dir, array $manifest)
-    {
-        return new self($dir, $manifest);
-    }
-
-    /**
      * 针对特定服务取回有效的版本列表。
      *
      * @param string $service 服务名称。
@@ -193,7 +180,7 @@ class ApiProvider
         }
 
         // 解析版本或返回空
-        if (isset($this->manifest)) {
+        if (!isset($this->manifest)) {
             $this->buildVersionList($service);
         }
 
