@@ -9,14 +9,15 @@
 
 namespace CloudStorage;
 
-use CloudStorage\Credentials\CredentialProvider;
+use Aws\Credentials\CredentialProvider;
 use CloudStorage\Credentials\CredentialsInterface;
 use CloudStorage\Exceptions\CloudStorageException;
-use CloudStorage\Upyun\Credential;
 use GuzzleHttp\RetryMiddleware;
 
 /**
- * Class ClientConstructor
+ * 客户端构造者。
+ *
+ * @internal 内部使用，解析一系列默认配置至客户端。
  *
  * @package CloudStorage
  */
@@ -28,7 +29,7 @@ class ClientConstructor
     private $arguments;
 
     /**
-     * @var array
+     * @var array 类型和类型判断函数之间的映射。
      */
     private static $typeMap = [
         'resource' => 'is_resource',
@@ -41,7 +42,7 @@ class ClientConstructor
     ];
 
     /**
-     * @var array
+     * @var array 默认配置。
      */
     private static $defaultArguments = [
         'service'           => [
@@ -49,7 +50,7 @@ class ClientConstructor
             'valid'    => ['string'],
             'required' => true,
             'internal' => true,
-            'doc'      => '初始化的云服务名称。通过对应的云服务客户端使用 CloudStorage 时，这个值是默认自动填充的（如：Cloudstorage\\Upyun\\UpyunClient）。',
+            'doc'      => '初始化的云服务名称。通过对应的云服务客户端使用 CloudStorage 时，这个值是默认自动填充的（如：Cloudstorage\\Upyun\\UpyunClient）填充为 upyun。',
         ],
         'exceptionClass'    => [
             'type'     => 'value',
@@ -62,7 +63,7 @@ class ClientConstructor
             'type'    => 'value',
             'valid'   => ['string'],
             'default' => 'https',
-            'doc'     => '连接云服务时使用的 URI 模式。CloudStorage 将默认启用 https（如 SSL/TLS 连接）连接云服务的端点。你可以通过设置 ``scheme`` 为 http 不加密的连接云服务，但是极不推荐。',
+            'doc'     => '连接云服务时使用的 URI 模式。CloudStorage 将默认启用 https（如 SSL/TLS 连接）连接云服务的端点。你可以通过设置 ``scheme`` 为 http 不加密连接云服务，但是极不推荐。',
         ],
         'signatureProvider' => [
             'type'    => 'value',
@@ -90,7 +91,7 @@ class ClientConstructor
             'fn'    => [__CLASS__, 'applyDefaultProvider'],
             'doc'   => '指定用来签名请求的凭证。可以提供
             CloudStorage\\Credentials\\CredentialsInterface 对象，一个包含
-            key，secret 的关联数组，`false` 作为空凭证，或一个 callable 凭证提供者创建凭证或返回 null。CloudStorage\\Credentials\\CredentialProvider 中列举了一组内置的凭证提供者。如果没有提供凭证，CloudStorage 将试图从环境变量中加载它们。',
+            key，secret 的关联数组，`false` 作为空凭证，或一个 callable 凭证提供者创建凭证或返回 null。CloudStorage\\Credentials\\AbstractCredentialProvider 中列举了一组内置的凭证提供者。如果没有提供凭证，CloudStorage 将试图从环境变量中加载它们。',
         ],
         'retries'           => [
             'type'    => 'value',
