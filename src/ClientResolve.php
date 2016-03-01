@@ -24,7 +24,7 @@ use CloudStorage\Signatures\SignatureProvider;
  *
  * @package  CloudStorage
  */
-class ClientResolve
+class ClientResolver
 {
     /**
      * @var array
