@@ -9,24 +9,27 @@
 
 namespace CloudStorage;
 
-use Aws\Credentials\CredentialProvider;
+use CloudStorage\Api\ApiProvider;
+use CloudStorage\Api\Service;
+use CloudStorage\Api\Validator;
+use CloudStorage\Credentials\AbstractCredentialProvider;
 use CloudStorage\Credentials\CredentialsInterface;
 use CloudStorage\Exceptions\CloudStorageException;
-use GuzzleHttp\RetryMiddleware;
+use CloudStorage\Signatures\SignatureProvider;
 
 /**
  * 客户端构造者。
  *
  * @internal 内部使用，解析一系列默认配置至客户端。
  *
- * @package CloudStorage
+ * @package  CloudStorage
  */
-class ClientConstructor
+class ClientResolver
 {
     /**
      * @var array
      */
-    private $arguments;
+    private $argumentDefinitions;
 
     /**
      * @var array 类型和类型判断函数之间的映射。
@@ -65,16 +68,29 @@ class ClientConstructor
             'default' => 'https',
             'doc'     => '连接云服务时使用的 URI 模式。CloudStorage 将默认启用 https（如 SSL/TLS 连接）连接云服务的端点。你可以通过设置 ``scheme`` 为 http 不加密连接云服务，但是极不推荐。',
         ],
+        'version'           => [
+            'type'     => 'value',
+            'valid'    => ['string'],
+            'required' => [__CLASS__, 'missingVersion'],
+            'doc'      => '云服务使用的版本（如 v1）。',
+        ],
+        'apiProvider'       => [
+            'type'    => 'value',
+            'valid'   => ['callable'],
+            'fn'      => [__CLASS__, 'applyApiProvider'],
+            'default' => [ApiProvider::class, 'defaultProvider'],
+            'doc'     => '一个可选的 PHP callable 接受分类，服务名称和版本号为参数，返回对应的配置数组，分类的值可以是 api，waiter 或 paginator 中的一个。',
+        ],
         'signatureProvider' => [
             'type'    => 'value',
             'value'   => ['callable'],
-            'default' => [__CLASS__, 'applyDefaultSignatureProvider'],
+            'default' => [__CLASS__, 'defaultSignatureProvider'],
             'doc'     => '签名提供者。一个 callable 类型的函数，接受云服务名称（如 upyun）和签名版本（例如 base）为参数，并返回 SignatureInterface 对象或 null。这个签名提供者被客户端用来创建签名。CloudStorage\\Signature\\SignatureProvider 中列举了一组内置的提供者。',
         ],
         'signatureVersion'  => [
             'type'    => 'config',
             'valid'   => ['string'],
-            'default' => [__CLASS__, 'applyDefaultSignatureVersion'],
+            'default' => [__CLASS__, 'defaultSignatureVersion'],
             'doc'     => '代表一个云服务的自定义签名版本的字符串（如 base）。注意：不同操作的签名版本可能会覆盖这个默认版本。',
         ],
         'profile'           => [
@@ -84,12 +100,11 @@ class ClientConstructor
             'doc'   => '当云服务凭证是从配置文件中创建的，指定使用哪一个身份。这个设置会覆盖 CLOUDSTORAGE_PROFILE 环境变量。注意：指定 profile 会导致 credentials 设置中的内容被忽略。',
         ],
         'credentials'       => [
-            'type'  => 'value',
-            'valid' => [
-                CredentialsInterface::class, 'array', 'bool',
-                'callable'],
-            'fn'    => [__CLASS__, 'applyDefaultProvider'],
-            'doc'   => '指定用来签名请求的凭证。可以提供
+            'type'    => 'value',
+            'valid'   => [CredentialsInterface::class, 'array', 'bool', 'callable'],
+            'fn'      => [__CLASS__, 'applyCredentials'],
+            'default' => [__CLASS__, 'defaultCredentialProvider'],
+            'doc'     => '指定用来签名请求的凭证。可以提供
             CloudStorage\\Credentials\\CredentialsInterface 对象，一个包含
             key，secret 的关联数组，`false` 作为空凭证，或一个 callable 凭证提供者创建凭证或返回 null。CloudStorage\\Credentials\\AbstractCredentialProvider 中列举了一组内置的凭证提供者。如果没有提供凭证，CloudStorage 将试图从环境变量中加载它们。',
         ],
@@ -128,7 +143,7 @@ class ClientConstructor
             'type'    => 'value',
             'valid'   => ['callable'],
             'fn'      => [__CLASS__, 'applyHandler'],
-            'default' => [__CLASS__, 'applyDefaultHandler'],
+            'default' => [__CLASS__, 'defaultHandler'],
             'doc'     => '处理器，接受 CloudStorage\\Contracts\\CommandInterface 和
             PSR-7 请求对象作为参数，返回一个 promise， 代表已完成的
             CloudStorage\\Contracts\\ResultInterface 对象或已失败的
@@ -169,7 +184,7 @@ class ClientConstructor
      */
     public function __construct(array $arguments)
     {
-        $this->arguments = $arguments;
+        $this->argumentDefinitions = $arguments;
     }
 
     /**
@@ -185,7 +200,7 @@ class ClientConstructor
     public function resolve(array $arguments, HandlerList $list)
     {
         $arguments['config'] = [];
-        foreach ($this->arguments as $key => $arg) {
+        foreach ($this->argumentDefinitions as $key => $arg) {
             // 为没有设置的选项添加默认值，验证必须的值，未设置必须则跳过。
             if (!isset($arguments[$key])) {
                 if (isset($arg['default'])) {
@@ -221,9 +236,9 @@ class ClientConstructor
             if ($arg['type'] === 'config') {
                 $arguments['config'][$key] = $arguments[$key];
             }
-
-            return $arguments;
         }
+
+        return $arguments;
     }
 
     /**
@@ -236,7 +251,7 @@ class ClientConstructor
     private function throwRequired(array $arguments)
     {
         $missing = [];
-        foreach ($this->arguments as $key => $arg) {
+        foreach ($this->argumentDefinitions as $key => $arg) {
             if (empty($arg['required'])
                 || isset($arg['default'])
                 || array_key_exists($key, $arguments)
@@ -261,7 +276,7 @@ class ClientConstructor
      */
     private function getArgMessage($name, $arguments = [], $isRequired = false)
     {
-        $arg = $this->arguments[$name];
+        $arg = $this->argumentDefinitions[$name];
         $msg = '';
         $modifiers = [];
         if (isset($arg['valid'])) {
@@ -295,7 +310,7 @@ class ClientConstructor
      */
     private function invalidType($name, $provided)
     {
-        $expected = implode('|', $this->arguments[$name]['valid']);
+        $expected = implode('|', $this->argumentDefinitions[$name]['valid']);
         $msg = "Invalid configuration value "
             . "provided for \"{$name}\". Expected {$expected}, but got "
             . describeType($provided) . "\n\n"
@@ -303,36 +318,106 @@ class ClientConstructor
         throw new \InvalidArgumentException($msg);
     }
 
-    public static function applyRetries($value, array &$arguments, HandlerList $list)
+    /**
+     * @param array $arguments
+     *
+     * @return string
+     */
+    public static function missingVersion(array $arguments)
     {
-        // todo
-        if ($value) {
-            $decider = \Aws\RetryMiddleware::createDefaultDecider($value);
-            $list->appendSign(Middleware::retry($decider), 'retry');
-        }
+        $service = isset($arguments['service']) ? $arguments['service'] : '';
+        $versions = ApiProvider::defaultProvider()->getVersions($service);
+        $versions = implode("\n", array_map(function ($v) {
+            return "* \"$v\"";
+        }, $versions)) ?: '* (not found)';
+
+        return <<<TIPS
+A "version" configuration value is required. Specifying a version constraint
+ensures that your code will not be affected by a breaking change made to the
+service. For example, when using Upyun, you can lock your API version to
+"v1".
+
+Your build of the SDK has the following version(s) of "{$service}": {$versions}
+
+You may provide "latest" to the "version" configuration value to utilize the
+most recent available API version that your client's API provider can find.
+Note: Using 'latest' in a production application is not recommended.
+
+A list of available API versions can be found on each client's API documentation
+page: https://github.com/AbrahamGreyson/cloudstorage . If you are
+unable to load a specific API version, then you may need to update your copy of
+the SDK.
+TIPS;
+    }
+
+    public static function applyApiProvider(callable $value, array &$arguments, HandlerList $list)
+    {
+        $api = new Service(
+            ApiProvider::resolve(
+                $value,
+                'api',
+                $arguments['service'],
+                $arguments['version']
+            ),
+            $value
+        );
+        $arguments['api'] = $api;
+        // todo add endpoint
+        $arguments['serializer'] = Service::createSerializer($api, $arguments['endpoint']);
+        // todo createParser
+        $arguments['parser'] = Service::createParser($api);
+        // todo get protocol
+        $arguments['errorParser'] = Service::createErrorParser($api->getProtocol());
+        $list->prependBuild(Middleware::requestBuilder($arguments['serializer']), 'builder');
+    }
+
+    public static function defaultSignatureProvider()
+    {
+        return SignatureProvider::defaultProvider();
+    }
+    
+    public static function defaultSignatureVersion(array &$arguments)
+    {
+        return isset($arguments['config']['signatureVersion'])
+            ? $arguments['config']['signatureVersion']
+            // todo add method
+            : $arguments['api']->getSignatureVersion();
+    }
+
+    public static function applyProfile($_, array &$arguments)
+    {
+        $arguments['credentials'] = AbstractCredentialProvider::ini($arguments['profile']);
+    }
+
+    public static function defaultCredential(array $arguments)
+    {
+        $service = $arguments['service'];
+        $credentialConcrete = "\\CloudStorage\\" . ucfirst($service) . '\\Credential';
+
+        return $credentialConcrete::defaultProvider();
     }
 
     public static function applyCredentials($value, array &$arguments)
     {
+        $service = $arguments['service'];
+        $credentialConcrete = "\\CloudStorage\\" . ucfirst($service) . "\\Credential";
         if (is_callable($value)) {
             return;
         } elseif ($value instanceof CredentialsInterface) {
-            $arguments['credentials'] = CredentialProvider::fromCredentials($value);
+            $arguments['credentials'] = AbstractCredentialProvider::fromCredentials($value);
         } elseif (is_array($value)
             && isset($value['key'])
             && isset($value['secret'])
         ) {
-            $arguments['credentials'] = CredentialProvider::fromCredentials(
-                // todo
-                new Credentials(
+            $arguments['credentials'] = AbstractCredentialProvider::fromCredentials(
+                new $credentialConcrete(
                     $value['key'],
                     $value['secret']
                 )
             );
         } elseif (false === $value) {
-            $arguments['credentials'] = CredentialProvider::fromCredentials(
-                // todo
-                new Credentials('', '')
+            $arguments['credentials'] = AbstractCredentialProvider::fromCredentials(
+                new $credentialConcrete('', '')
             );
         } else {
             throw new \InvalidArgumentException('Credentials must be an instance of '
@@ -340,5 +425,61 @@ class ClientConstructor
                 . 'array that contains "key", "secret", and an optional "token" '
                 . 'key-value pairs, a credentials provider function, or false.');
         }
+    }
+    
+    public static function applyRetries($value, array &$arguments, HandlerList $list)
+    {
+        if ($value) {
+            $decider = RetryMiddleware::createDefaultDecider($value);
+            $list->appendSign(Middleware::retry($decider), 'retry');
+        }
+    }
+
+    public static function applyValidate($value, array &$arguments, HandlerList $list)
+    {
+        if (false === $value) {
+            return;
+        }
+
+        $validator = $value === true
+            ? new Validator()
+            : new Validator($value);
+        $list->appendValidate(
+            Middleware::validation($arguments['api'], $validator), 'validation'
+        );
+    }
+
+    public static function applyDebug($value, array &$arguments, HandlerList $list)
+    {
+        if (false !== $value) {
+            // todo method
+            $list->interpose(new TraceMiddleware($value === true ? [] : $value));
+        }
+    }
+
+    public static function applyHandler($value, array &$arguments, HandlerList $list)
+    {
+        $list->setHandler($value);
+    }
+
+    public static function defaultHandler(array &$arguments)
+    {
+        // todo class
+        return new WrappedHttpHandler(
+            defaultHttpHandler(),
+            $arguments['parser'],
+            $arguments['error_parser'],
+            $arguments['exception_class']
+        );
+    }
+
+    public static function applyHttpHandler($value, array &$arguments, HandlerList $list)
+    {
+        $arguments['handler'] = new WrappedHttpHandler(
+            $value,
+            $arguments['parser'],
+            $arguments['error_parser'],
+            $arguments['exception_class']
+        );
     }
 }
