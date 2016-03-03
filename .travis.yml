@@ -17,6 +17,7 @@ matrix:
 
 before_script:
   - export CLOUDSTORAGE_PROFILE=defa
+  - composer selfupdate
   - composer update --prefer-source --no-interaction $COMPOSER_LOWEST
 
 script:
