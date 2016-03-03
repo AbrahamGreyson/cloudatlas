@@ -37,14 +37,14 @@ return [
                 'shape' => 'BucketAlreadyExists',
             ],
             'documentationUrl' => 'https://www.google.com',
-            'alias' => 'PutBucket'
+            'alias' => 'PutBucket',
         ],
     ],
     'shapes'     => [
         'CreateBucketRequest' => [
             'type' => 'structure',
             'required' => [
-                'Bucket'
+                'Bucket',
             ],
             'members' => [
                 'ACL' => [
@@ -61,10 +61,10 @@ return [
                     'shape' => 'CreateBucketConfiguration',
                     'locationName' => 'CreateBucketConfiguration',
                     'xmlNamespace' => [
-                        'uri' => 'www.google.com'
-                    ]
-                ]
-            ]
-        ]
+                        'uri' => 'www.google.com',
+                    ],
+                ],
+            ],
+        ],
     ],
 ];

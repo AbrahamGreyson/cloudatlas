@@ -14,12 +14,9 @@ use League\Flysystem\Config;
 
 /**
  * CloudStorage SDK 的 FlySystem 文件库适配器。
- *
- * @package CloudStorage
  */
 class FlySystemAdapter extends AbstractAdapter
 {
-    
     /**
      * Write a new file.
      *

@@ -30,16 +30,14 @@ namespace CloudStorage;
  *
  * 中间件能以一个名称来注册，便于通过名称简单的将它添加到另一个中间件的之前或之后。也便于
  * 通过名称移除一个中间件（还能通过实例移除）。
- *
- * @package CloudStorage
  */
 class HandlerList implements \Countable
 {
-    const INIT     = 'init';
+    const INIT = 'init';
     const VALIDATE = 'validate';
-    const BUILD    = 'build';
-    const SIGN     = 'sign';
-    const HANDLE   = 'handle';
+    const BUILD = 'build';
+    const SIGN = 'sign';
+    const HANDLE = 'handle';
 
     /**
      * @var callable 处理器列表中的唯一一个处理器（其它的是中间件）
@@ -47,7 +45,7 @@ class HandlerList implements \Countable
     private $handler;
 
     /**
-     * 某个命名的中间件属于哪个步骤，结构：
+     * 某个命名的中间件属于哪个步骤，结构：.
      *
      * <code>
      * [
@@ -114,13 +112,13 @@ class HandlerList implements \Countable
                 if ($tuple[1]) {
                     $str .= "Name: {$tuple[1]}, ";
                 }
-                $str .= "Function: " . $this->debugCallable($tuple[0]) . "\n";
+                $str .= 'Function: '.$this->debugCallable($tuple[0])."\n";
                 $i++;
             }
         }
 
         if ($this->handler) {
-            $str .= "{$i} Handler: " . $this->debugCallable($this->handler) .
+            $str .= "{$i} Handler: ".$this->debugCallable($this->handler).
                 "\n";
         }
 
@@ -143,7 +141,7 @@ class HandlerList implements \Countable
 
             return "callable(['{$element}', '{$fn[1]}'])";
         } else {
-            return "callable(" . spl_object_hash($fn) . ")";
+            return 'callable('.spl_object_hash($fn).')';
         }
     }
 
@@ -164,7 +162,7 @@ class HandlerList implements \Countable
      */
     public function hasHandler()
     {
-        return (bool)$this->handler;
+        return (bool) $this->handler;
     }
 
     /**
@@ -300,7 +298,7 @@ class HandlerList implements \Countable
      */
     private function removeByName($name)
     {
-        if (!isset($this->named[$name])) {
+        if (! isset($this->named[$name])) {
             return;
         }
 
@@ -343,7 +341,7 @@ class HandlerList implements \Countable
      */
     public function resolve()
     {
-        if (!($prev = $this->handler)) {
+        if (! ($prev = $this->handler)) {
             throw new \LogicException('No handler has been specified.');
         }
 
@@ -368,7 +366,7 @@ class HandlerList implements \Countable
      */
     private function insert($search, $name, callable $middleware, $before = false)
     {
-        if (!isset($this->named[$search])) {
+        if (! isset($this->named[$search])) {
             throw new \InvalidArgumentException("$search not found.");
         }
 
@@ -446,7 +444,7 @@ class HandlerList implements \Countable
     private function sortMiddleware()
     {
         $this->sorted = [];
-        if (!$this->interposeFn) {
+        if (! $this->interposeFn) {
             foreach ($this->steps as $step) {
                 foreach ($step as $fn) {
                     $this->sorted[] = $fn[0];

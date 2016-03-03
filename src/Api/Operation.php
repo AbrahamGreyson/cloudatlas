@@ -11,8 +11,6 @@ namespace CloudStorage\Api;
 
 /**
  * 代表一个 API 操作。
- *
- * @package CloudStorage\Api
  */
 class Operation
 {

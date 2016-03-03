@@ -14,8 +14,6 @@ use CloudStorage\Facilities\DataTrait;
 
 /**
  * 命令对象。
- *
- * @package CloudStorage
  */
 class Command implements CommandInterface
 {
@@ -45,7 +43,7 @@ class Command implements CommandInterface
         $this->data = $args;
         $this->handlerList = $list;
 
-        if (!isset($this->data['@http'])) {
+        if (! isset($this->data['@http'])) {
             $this->data['@http'] = [];
         }
     }

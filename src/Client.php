@@ -22,8 +22,6 @@ use Psr\Http\Message\UriInterface;
  * CloudStorage 客户端，用来和云服务进行交互。
  * @method Promise PutObject($bucket, $key, $stream);
  * @method Promise Copy($key, $to);
- *
- * @package CloudStorage
  */
 class Client implements ClientInterface
 {
@@ -63,7 +61,7 @@ class Client implements ClientInterface
     private $defaultRequestOptions;
 
     /**
-     * 客户端构造方法接受一个关联数组作为参数，以下是关联数组的可用选项：
+     * 客户端构造方法接受一个关联数组作为参数，以下是关联数组的可用选项：.
      *
      * - credentials：（CredentialsInterface|array|bool|callable）
      *   指定用来给请求签名的凭证。可以提供：
@@ -161,15 +159,15 @@ class Client implements ClientInterface
      */
     public function getCommand($name, array $args = [])
     {
-        if (!isset($this->api['operations'][$name])) {
+        if (! isset($this->api['operations'][$name])) {
             $name = ucfirst($name);
-            if (!isset($this->api['operations'][$name])) {
+            if (! isset($this->api['operations'][$name])) {
                 throw new \InvalidArgumentException("Operation not found:
                 $name");
             }
         }
 
-        if (!isset($args['@http'])) {
+        if (! isset($args['@http'])) {
             $args['@http'] = $this->defaultRequestOptions;
         } else {
             $args['@http'] += $this->defaultRequestOptions;
@@ -268,7 +266,7 @@ class Client implements ClientInterface
     public function getIterator($name, array $args = [])
     {
         $config = $this->api->getPaginatorConfig($name);
-        if (!$config['result_key']) {
+        if (! $config['result_key']) {
             throw new \UnexpectedValueException(sprintf(
                 'There are no resources to iterate for the %s
                 operation of $s', $name, $this->api['serviceFullName']));
@@ -284,7 +282,7 @@ class Client implements ClientInterface
 
         $result = $this->execute($this->getCommand($name, $args))->search($key);
 
-        return new \ArrayIterator((array)$result);
+        return new \ArrayIterator((array) $result);
     }
 
     /**
