@@ -21,8 +21,6 @@ use CloudStorage\Signatures\SignatureProvider;
  * 客户端构造者。
  *
  * @internal 内部使用，解析一系列默认配置至客户端。
- *
- * @package  CloudStorage
  */
 class ClientResolver
 {
@@ -152,9 +150,8 @@ class ClientResolver
         ],
     ];
 
-
     /**
-     * 获得默认客户端配置选项的数组，每个包含下述内容：
+     * 获得默认客户端配置选项的数组，每个包含下述内容：.
      *
      * - type：（string，required）类型，支持下述值：
      *   - value：默认的选项类型。
@@ -202,7 +199,7 @@ class ClientResolver
         $arguments['config'] = [];
         foreach ($this->argumentDefinitions as $key => $arg) {
             // 为没有设置的选项添加默认值，验证必须的值，未设置必须则跳过。
-            if (!isset($arguments[$key])) {
+            if (! isset($arguments[$key])) {
                 if (isset($arg['default'])) {
                     // 没有提供相应设置时，则使用默认值。
                     $arguments[$key] = is_callable($arg['default'])
@@ -283,10 +280,10 @@ class ClientResolver
             $modifiers[] = implode('|', $arg['valid']);
         }
         if (isset($arg['choice'])) {
-            $modifiers[] = 'One of ' . implode(', ', $arg['choice']);
+            $modifiers[] = 'One of '.implode(', ', $arg['choice']);
         }
         if ($modifiers) {
-            $msg .= '(' . implode('; ', $modifiers) . ')';
+            $msg .= '('.implode('; ', $modifiers).')';
         }
         $msg = wordwrap("{$name}: {$msg}", 75, "\n  ");
 
@@ -311,10 +308,10 @@ class ClientResolver
     private function invalidType($name, $provided)
     {
         $expected = implode('|', $this->argumentDefinitions[$name]['valid']);
-        $msg = "Invalid configuration value "
-            . "provided for \"{$name}\". Expected {$expected}, but got "
-            . describeType($provided) . "\n\n"
-            . $this->getArgMessage($name);
+        $msg = 'Invalid configuration value '
+            ."provided for \"{$name}\". Expected {$expected}, but got "
+            .describeType($provided)."\n\n"
+            .$this->getArgMessage($name);
         throw new \InvalidArgumentException($msg);
     }
 
@@ -375,7 +372,7 @@ TIPS;
     {
         return SignatureProvider::defaultProvider();
     }
-    
+
     public static function defaultSignatureVersion(array &$arguments)
     {
         return isset($arguments['config']['signatureVersion'])
@@ -392,7 +389,7 @@ TIPS;
     public static function defaultCredential(array $arguments)
     {
         $service = $arguments['service'];
-        $credentialConcrete = "\\CloudStorage\\" . ucfirst($service) . '\\Credential';
+        $credentialConcrete = '\\CloudStorage\\'.ucfirst($service).'\\Credential';
 
         return $credentialConcrete::defaultProvider();
     }
@@ -400,7 +397,7 @@ TIPS;
     public static function applyCredentials($value, array &$arguments)
     {
         $service = $arguments['service'];
-        $credentialConcrete = "\\CloudStorage\\" . ucfirst($service) . "\\Credential";
+        $credentialConcrete = '\\CloudStorage\\'.ucfirst($service).'\\Credential';
         if (is_callable($value)) {
             return;
         } elseif ($value instanceof CredentialsInterface) {
@@ -421,12 +418,12 @@ TIPS;
             );
         } else {
             throw new \InvalidArgumentException('Credentials must be an instance of '
-                . 'CloudStorage\Credentials\CredentialsInterface, an associative '
-                . 'array that contains "key", "secret", and an optional "token" '
-                . 'key-value pairs, a credentials provider function, or false.');
+                .'CloudStorage\Credentials\CredentialsInterface, an associative '
+                .'array that contains "key", "secret", and an optional "token" '
+                .'key-value pairs, a credentials provider function, or false.');
         }
     }
-    
+
     public static function applyRetries($value, array &$arguments, HandlerList $list)
     {
         if ($value) {

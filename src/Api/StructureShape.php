@@ -23,7 +23,7 @@ class StructureShape extends Shape
     {
         $definition['type'] = 'structure';
 
-        if (!isset($definition['members'])) {
+        if (! isset($definition['members'])) {
             $definition['members'] = [];
         }
 
@@ -68,13 +68,12 @@ class StructureShape extends Shape
     {
         $members = $this->getMembers();
 
-        if (!isset($members[$name])) {
-            throw new \InvalidArgumentException('Unknown member ' . $name);
+        if (! isset($members[$name])) {
+            throw new \InvalidArgumentException('Unknown member '.$name);
         }
 
         return $members[$name];
     }
-
 
     private function generateMembersHash()
     {

@@ -14,8 +14,6 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * 为各个云服务、以及同一云服务的不同版本的签名方法，提供了统一接口。
- *
- * @package CloudStorage\Signatures
  */
 interface SignatureInterface
 {

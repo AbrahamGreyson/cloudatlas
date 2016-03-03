@@ -15,7 +15,6 @@ use Psr\Http\Message\RequestInterface;
 
 class BasicSignature implements SignatureInterface
 {
-    
     /**
      * 通过提供的凭证，对特定请求进行签名，并添加对应的 HTTP 头至请求中。
      *
@@ -29,7 +28,7 @@ class BasicSignature implements SignatureInterface
         CredentialsInterface $credential
     ) {
         $content = base64_encode(
-            $credential['key'] . ':' .
+            $credential['key'].':'.
             $credential['secret']
         );
         $basicSignature = "Basic $content";

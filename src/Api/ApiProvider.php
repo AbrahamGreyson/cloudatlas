@@ -42,8 +42,6 @@ use CloudStorage\Exceptions\UnresolvedApiException;
  * $data = $c('api', 'qiniu', 'v1'); // $b 处理这个。
  * $data = $c('api', 'invalid', '2099-12-31'); // 哪个都不能处理无效的 API 数据请求。
  * </code>
- *
- * @package CloudStorage\Api
  */
 class ApiProvider
 {
@@ -76,7 +74,7 @@ class ApiProvider
      */
     public static function defaultProvider()
     {
-        return new self(__DIR__ . '/data', \CloudStorage\manifest());
+        return new self(__DIR__.'/data', \CloudStorage\manifest());
     }
 
     /**
@@ -87,7 +85,7 @@ class ApiProvider
     {
         $this->manifest = $manifest;
         $this->modelsDir = rtrim($modelsDir, '/');
-        if (!is_dir($this->modelsDir)) {
+        if (! is_dir($this->modelsDir)) {
             throw new \InvalidArgumentException(
                 "The specified models directory , {$modelsDir} , was not found"
             );
@@ -118,11 +116,11 @@ class ApiProvider
      */
     public function getVersions($service)
     {
-        if (!isset($this->manifest)) {
+        if (! isset($this->manifest)) {
             $this->buildVersionList($service);
         }
 
-        if (!isset($this->manifest[$service]['versions'])) {
+        if (! isset($this->manifest[$service]['versions'])) {
             return [];
         }
 
@@ -130,7 +128,6 @@ class ApiProvider
     }
 
     /**
-     *
      * 解析 API 提供者确保返回非空值。
      *
      * @param callable $provider 要调用的提供者。
@@ -150,12 +147,12 @@ class ApiProvider
         }
 
         // 根据输入信息抛出异常。
-        if (!isset(self::$typeMap[$type])) {
-            $msg = "The type must be one of: " . implode(', ', self::$typeMap);
+        if (! isset(self::$typeMap[$type])) {
+            $msg = 'The type must be one of: '.implode(', ', self::$typeMap);
         } elseif ($service) {
             $msg = "The {$service} service does not have version: {$version}.";
         } else {
-            $msg = "You must specify a service name to retrieve its API data.";
+            $msg = 'You must specify a service name to retrieve its API data.';
         }
 
         throw new UnresolvedApiException($msg);
@@ -176,16 +173,16 @@ class ApiProvider
         if (isset(self::$typeMap[$type])) {
             $type = self::$typeMap[$type];
         } else {
-            return null;
+            return;
         }
 
         // 解析版本或返回空
-        if (!isset($this->manifest)) {
+        if (! isset($this->manifest)) {
             $this->buildVersionList($service);
         }
 
-        if (!isset($this->manifest[$service]['versions'][$version])) {
-            return null;
+        if (! isset($this->manifest[$service]['versions'][$version])) {
+            return;
         }
 
         $version = $this->manifest[$service]['versions'][$version];
@@ -194,7 +191,7 @@ class ApiProvider
         try {
             return \CloudStorage\loadApiFileOrThrow($path);
         } catch (\InvalidArgumentException $e) {
-            return null;
+            return;
         }
     }
 
@@ -207,15 +204,15 @@ class ApiProvider
     {
         $dir = "{$this->modelsDir}/{$service}";
 
-        if (!is_dir($dir)) {
+        if (! is_dir($dir)) {
             return;
         }
         // 取得版本号，移除 . 和 .. 并降序排列。
         $results = array_diff(scandir($dir, SCANDIR_SORT_DESCENDING), [
             '..',
-            '.']);
+            '.', ]);
 
-        if (!$results) {
+        if (! $results) {
             $this->manifest[$service] = ['versions' => []];
         } else {
             $this->manifest[$service] = [
