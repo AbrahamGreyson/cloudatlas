@@ -46,7 +46,7 @@ function manifest($service = null)
     static $manifest = [];
     static $aliases = [];
     if (empty($manifest)) {
-        $manifest = require(__DIR__ . './Api/data/manifest.php');
+        $manifest = require(__DIR__ . '/Api/data/manifest.php');
         foreach ($manifest as $endpoint => $info) {
             $alias = strtolower($info['namespace']);
             // todo endpoint
