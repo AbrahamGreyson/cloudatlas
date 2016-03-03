@@ -1,0 +1,23 @@
+language: php
+
+php:
+  - 5.5
+  - 5.6
+  - 7.0
+  - hhvm
+
+env:
+  COMPOSER_LOWEST="--prefer-lowest"
+  COMPOSER__LOWEST=""
+
+matrix:
+  allow_failures:
+    - php: hhvm
+  fast_finish: true
+
+before_script:
+  - export CLOUDSTORAGE_PROFILE=defa
+  - composer update --prefer-source $COMPOSER_LOWEST
+
+script:
+  - ./vendor/bin/phpunit
