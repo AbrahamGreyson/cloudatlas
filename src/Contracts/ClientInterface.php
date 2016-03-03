@@ -28,6 +28,7 @@ interface ClientInterface
      * @param array  $arguments 传递给 getCommand 方法的参数。
      *
      * @return ResultInterface
+     *
      * @throws \Exception
      */
     public function __call($name, array $arguments);
@@ -44,6 +45,7 @@ interface ClientInterface
      * @param array  $args 传递给命令的额外参数。
      *
      * @return CommandInterface
+     *
      * @throws \InvalidArgumentException 如果命令不存在。
      */
     public function getCommand($name, array $args = []);
@@ -84,6 +86,7 @@ interface ClientInterface
 
     /**
      * 获取和对应云服务客户端相关联的服务描述。
+     *
      * @return \CloudStorage\Api\Service
      */
     public function getApi();
@@ -113,6 +116,7 @@ interface ClientInterface
      * @param array  $args 每个命令所使用的命令参数。
      *
      * @return \Iterator
+     *
      * @throws \UnexpectedValueException 如果迭代器配置无效。
      */
     public function getIterator($name, array $args = []);
@@ -124,6 +128,7 @@ interface ClientInterface
      * @param array  $args 每个命令所使用的命令参数。
      *
      * @return ResultPaginator
+     *
      * @throws \UnexpectedValueException 如果迭代器配置无效。
      */
     public function getPaginator($name, array $args = []);

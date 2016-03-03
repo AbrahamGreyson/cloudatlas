@@ -62,6 +62,7 @@ class StructureShape extends Shape
      * @param string $name 要获取的成员名称。
      *
      * @return Shape
+     *
      * @throws \InvalidArgumentException 如果成员没找到。
      */
     public function getMember($name)
@@ -69,12 +70,11 @@ class StructureShape extends Shape
         $members = $this->getMembers();
 
         if (!isset($members[$name])) {
-            throw new \InvalidArgumentException('Unknown member ' . $name);
+            throw new \InvalidArgumentException('Unknown member '.$name);
         }
 
         return $members[$name];
     }
-
 
     private function generateMembersHash()
     {

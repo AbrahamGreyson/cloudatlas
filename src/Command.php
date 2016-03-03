@@ -14,8 +14,6 @@ use CloudStorage\Facilities\DataTrait;
 
 /**
  * 命令对象。
- *
- * @package CloudStorage
  */
 class Command implements CommandInterface
 {

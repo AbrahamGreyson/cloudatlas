@@ -10,16 +10,16 @@
 return [
     'qiniu' => [
         'namespace' => 'Qiniu',
-        'versions'  => [
+        'versions' => [
             'latest' => 'v1',
-            'v1'     => 'v1',
+            'v1' => 'v1',
         ],
     ],
     'upyun' => [
         'namespace' => 'Upyun',
-        'versions'  => [
+        'versions' => [
             'latest' => 'v1',
-            'v1'     => 'v1',
+            'v1' => 'v1',
         ],
     ],
 ];

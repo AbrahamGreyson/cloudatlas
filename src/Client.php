@@ -20,10 +20,9 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * CloudStorage 客户端，用来和云服务进行交互。
+ *
  * @method Promise PutObject($bucket, $key, $stream);
  * @method Promise Copy($key, $to);
- *
- * @package CloudStorage
  */
 class Client implements ClientInterface
 {
@@ -63,7 +62,7 @@ class Client implements ClientInterface
     private $defaultRequestOptions;
 
     /**
-     * 客户端构造方法接受一个关联数组作为参数，以下是关联数组的可用选项：
+     * 客户端构造方法接受一个关联数组作为参数，以下是关联数组的可用选项：.
      *
      * - credentials：（CredentialsInterface|array|bool|callable）
      *   指定用来给请求签名的凭证。可以提供：
@@ -113,6 +112,7 @@ class Client implements ClientInterface
 
     /**
      * 获取默认的客户端构造参数用于实例化客户端。
+     *
      * @return array
      */
     public static function getDefaultArguments()
@@ -157,6 +157,7 @@ class Client implements ClientInterface
      * @param array  $args 传递给命令的额外参数。
      *
      * @return CommandInterface
+     *
      * @throws \InvalidArgumentException 如果命令不存在。
      */
     public function getCommand($name, array $args = [])
@@ -263,6 +264,7 @@ class Client implements ClientInterface
      * @param array  $args 每个命令所使用的命令参数。
      *
      * @return \Iterator
+     *
      * @throws \UnexpectedValueException 如果迭代器配置无效。
      */
     public function getIterator($name, array $args = [])
@@ -284,7 +286,7 @@ class Client implements ClientInterface
 
         $result = $this->execute($this->getCommand($name, $args))->search($key);
 
-        return new \ArrayIterator((array)$result);
+        return new \ArrayIterator((array) $result);
     }
 
     /**
@@ -294,6 +296,7 @@ class Client implements ClientInterface
      * @param array  $args 每个命令所使用的命令参数。
      *
      * @return ResultPaginator
+     *
      * @throws \UnexpectedValueException 如果迭代器配置无效。
      */
     public function getPaginator($name, array $args = [])

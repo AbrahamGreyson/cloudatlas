@@ -63,17 +63,14 @@ use GuzzleHttp\Promise;
  *      };
  * });
  * </code>
- *
- * @package CloudStorage\Credentials
  */
 abstract class AbstractCredentialProvider implements CredentialProviderInterface
 {
-    const ENV_KEY     = 'undefined';
-    const ENV_SECRET  = 'undefined';
+    const ENV_KEY = 'undefined';
+    const ENV_SECRET = 'undefined';
     const ENV_PROFILE = 'CLOUDSTORAGE_PROFILE';
 
     protected static $service = null;
-
 
     /**
      * @var array 自定义的凭证提供者。
@@ -115,7 +112,7 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
     /**
      * 扩展自定义的凭证提供者。
      *
-     * @param  string  $name
+     * @param string   $name
      * @param callable $provider
      */
     public static function extend($name, callable $provider)
@@ -134,6 +131,7 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
      * @param callable $arguments
      *
      * @return callable 凭证提供者。
+     *
      * @throws \BadMethodCallException 提供者未找到。
      */
     public static function __callStatic($name, $arguments)
@@ -195,13 +193,13 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
                 );
             }
 
-            return self::reject('Could not find environment variable credentials in ' .
-                static::ENV_KEY . '/' . static::ENV_SECRET);
+            return self::reject('Could not find environment variable credentials in '.
+                static::ENV_KEY.'/'.static::ENV_SECRET);
         };
     }
 
     /**
-     * todo ini 文件加载
+     * todo ini 文件加载.
      *
      * @param null $profile
      * @param null $filename
@@ -229,8 +227,8 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
             if (!isset($data[$profile][constant(static::ENV_KEY)])
                 || !isset($data[$profile][constant(static::ENV_SECRET)])
             ) {
-                return self::reject("No credentials present in INI profile "
-                    . "'{$profile}' ($filename)");
+                return self::reject('No credentials present in INI profile '
+                    ."'{$profile}' ($filename)");
             }
 
             return Promise\promise_for(

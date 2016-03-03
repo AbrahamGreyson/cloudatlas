@@ -24,6 +24,7 @@ class ListShape extends Shape
 
     /**
      * @return Shape
+     *
      * @throws \RuntimeException 如果没有指定 member。
      */
     public function getMember()

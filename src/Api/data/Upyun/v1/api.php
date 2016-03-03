@@ -8,26 +8,26 @@
  */
 
 return [
-    'version'    => 'v1',
-    'metadata'   => [
-        'apiVersion'          => 'v1',
-        'checksumFormat'      => 'md5',
-        'endpointPrefix'      => 'v0',
-        'globalEndpoint'      => 'api.upyun.com',
-        'protocol'            => 'rest-xml',
+    'version' => 'v1',
+    'metadata' => [
+        'apiVersion' => 'v1',
+        'checksumFormat' => 'md5',
+        'endpointPrefix' => 'v0',
+        'globalEndpoint' => 'api.upyun.com',
+        'protocol' => 'rest-xml',
         'serviceAbbreviation' => 'Upyun',
-        'serviceFullName'     => 'Upyun cloud storage and CDN service.',
-        'signatureVersion'    => 'v1',
-        'timestampFormat'     => 'rfc822',
+        'serviceFullName' => 'Upyun cloud storage and CDN service.',
+        'signatureVersion' => 'v1',
+        'timestampFormat' => 'rfc822',
     ],
     'operations' => [
         'CreateBucket' => [
-            'name'   => 'CreateBucket',
-            'http'   => [
-                'method'     => 'PUT',
+            'name' => 'CreateBucket',
+            'http' => [
+                'method' => 'PUT',
                 'requestUri' => '/{Bucket}',
             ],
-            'input'  => [
+            'input' => [
                 'shape' => 'CreateBucketRequest',
             ],
             'output' => [
@@ -37,34 +37,34 @@ return [
                 'shape' => 'BucketAlreadyExists',
             ],
             'documentationUrl' => 'https://www.google.com',
-            'alias' => 'PutBucket'
+            'alias' => 'PutBucket',
         ],
     ],
-    'shapes'     => [
+    'shapes' => [
         'CreateBucketRequest' => [
             'type' => 'structure',
             'required' => [
-                'Bucket'
+                'Bucket',
             ],
             'members' => [
                 'ACL' => [
-                    'shape'        => 'BucketCannedACL',
-                    'location'     => 'header',
+                    'shape' => 'BucketCannedACL',
+                    'location' => 'header',
                     'locationName' => 'x-amz-zcl',
                 ],
                 'Bucket' => [
-                    'shape'        => 'BucketName',
-                    'location'     => 'uri',
+                    'shape' => 'BucketName',
+                    'location' => 'uri',
                     'locationName' => 'Bucket',
                 ],
                 'CreateBucketConfiguration' => [
                     'shape' => 'CreateBucketConfiguration',
                     'locationName' => 'CreateBucketConfiguration',
                     'xmlNamespace' => [
-                        'uri' => 'www.google.com'
-                    ]
-                ]
-            ]
-        ]
+                        'uri' => 'www.google.com',
+                    ],
+                ],
+            ],
+        ],
     ],
 ];

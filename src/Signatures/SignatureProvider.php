@@ -45,8 +45,6 @@ use CloudStorage\Exceptions\UnresolvedSignatureException;
  * $signer = $c('foo', 'abc'); // $b 提供者处理这个调用。
  * $nullValue = $c('v100', '???'); // 没有提供者能处理，返回 null。
  * </code>
- *
- * @package CloudStorage\Signatures
  */
 class SignatureProvider
 {
@@ -68,6 +66,7 @@ class SignatureProvider
      * @param string   $service  服务名称。
      *
      * @return SignatureInterface
+     *
      * @throws UnresolvedSignatureException
      */
     public static function resolve(callable $provider, $version, $service)
@@ -79,7 +78,7 @@ class SignatureProvider
 
         throw new UnresolvedSignatureException(
             "Unable to resolve a signature for $version/$service. \n"
-            . "Valid signature versions include v1, basic and anonymous."
+            .'Valid signature versions include v1, basic and anonymous.'
         );
     }
 
@@ -117,18 +116,18 @@ class SignatureProvider
     public static function version()
     {
         return function ($version, $service) {
-            $namespace = "\\CloudStorage\\" . ucfirst($service);
-            $defaultSignature = $namespace . '\\Signature';
-            $basicSignature = $namespace . '\\BasicSignature';
+            $namespace = '\\CloudStorage\\'.ucfirst($service);
+            $defaultSignature = $namespace.'\\Signature';
+            $basicSignature = $namespace.'\\BasicSignature';
             if ('v1' === $version && class_exists($defaultSignature)) {
-                return new $defaultSignature;
+                return new $defaultSignature();
             } elseif ('basic' === $version && class_exists($basicSignature)) {
-                return new $basicSignature;
+                return new $basicSignature();
             } elseif ('anonymous' === $version) {
                 // todo anonymous signature.
-                return new \StdClass;
+                return new \StdClass();
             } else {
-                return null;
+                return;
             }
         };
     }

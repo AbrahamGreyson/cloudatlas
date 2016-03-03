@@ -11,8 +11,6 @@ namespace CloudStorage\Api;
 
 /**
  * 代表一个云服务的 API 模型。
- *
- * @package CloudStorage\Api
  */
 class Service extends AbstractModel
 {
@@ -28,16 +26,16 @@ class Service extends AbstractModel
     {
         static $default = [
             'operations' => [],
-            'shapes'     => [],
-            'metadata'   => [],
+            'shapes' => [],
+            'metadata' => [],
         ];
         static $defaultMeta = [
-            'version'          => null,
-            'service'          => null,
-            'endpoint'         => null,
-            'signature'        => null,
+            'version' => null,
+            'service' => null,
+            'endpoint' => null,
+            'signature' => null,
             'signatureVersion' => null,
-            'protocol'         => null,
+            'protocol' => null,
         ];
 
         $definition += $default;
@@ -52,15 +50,16 @@ class Service extends AbstractModel
      * @param string  $endpoint 发送请求的端点。
      *
      * @return callable
+     *
      * @throws \UnexpectedValueException
      */
     public static function createSerializer(Service $api, $endpoint)
     {
         static $mapping = [
-            'json'      => '',
-            'query'     => '',
+            'json' => '',
+            'query' => '',
             'rest-json' => '',
-            'rest-xml'  => '',
+            'rest-xml' => '',
         ];
 
         $protocol = $api->getProtocol();
@@ -70,7 +69,7 @@ class Service extends AbstractModel
         }
 
         throw new \UnexpectedValueException(
-            'Unknown protocol: ' . $protocol
+            'Unknown protocol: '.$protocol
         );
     }
 
