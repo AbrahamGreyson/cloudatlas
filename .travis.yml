@@ -35,7 +35,7 @@ install:
 
 before_script:
   # disable xdebug since it override var_dump() function we rely on to parse object.
-  - phpenv config-rm xdebug.ini
+  - if [ $(phpenv version-name) != "hhvm" ]; then phpenv config-rm xdebug.ini; fi
 
 script:
   - ./vendor/bin/phpunit
