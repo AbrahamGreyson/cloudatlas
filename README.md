@@ -2,11 +2,12 @@ SDK
 ===============
 
 [![StyleCI](https://styleci.io/repos/50803540/shield)](https://styleci.io/repos/50803540)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/?branch=master)
+[![Travis branch](https://img.shields.io/travis/AbrahamGreyson/cloudstorage/master.svg?style=flat-square)](https://styleci.io/repos/50803540)
+[![Scrutinizer](https://img.shields.io/scrutinizer/g/AbrahamGreyson/cloudstorage/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/?branch=master)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/AbrahamGreyson/cloudstorage.svg?style=flat-square)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/abraham-greyson/cloudstorage/version)](https://packagist.org/packages/abraham-greyson/cloudstorage)
 [![Latest Unstable Version](https://poser.pugx.org/abraham-greyson/cloudstorage/v/unstable)](https://packagist.org/packages/abraham-greyson/cloudstorage)
-[![License](https://poser.pugx.org/abraham-greyson/cloudstorage/license)](https://packagist.org/packages/abraham-greyson/cloudstorage)
+[![License](https://img.shields.io/badge/license-MIT-000000.svg)](https://packagist.org/packages/abraham-greyson/cloudstorage)
 
 
 <!-- ## 特性 
