@@ -32,8 +32,8 @@ class MapShape extends Shape
      */
     public function getValue()
     {
-        if (!$this->value) {
-            if (!isset($this->definition['value'])) {
+        if (! $this->value) {
+            if (! isset($this->definition['value'])) {
                 throw new \RuntimeException('No value specified');
             }
 
@@ -51,7 +51,7 @@ class MapShape extends Shape
      */
     public function getKey()
     {
-        if (!$this->key) {
+        if (! $this->key) {
             $this->key = isset($this->definition['key'])
                 ? Shape::create($this->definition['key'], $this->shapeMap)
                 : new Shape(['type' => 'string'], $this->shapeMap);

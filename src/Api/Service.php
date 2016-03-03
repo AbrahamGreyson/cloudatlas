@@ -11,8 +11,6 @@ namespace CloudStorage\Api;
 
 /**
  * 代表一个云服务的 API 模型。
- *
- * @package CloudStorage\Api
  */
 class Service extends AbstractModel
 {
@@ -70,7 +68,7 @@ class Service extends AbstractModel
         }
 
         throw new \UnexpectedValueException(
-            'Unknown protocol: ' . $protocol
+            'Unknown protocol: '.$protocol
         );
     }
 

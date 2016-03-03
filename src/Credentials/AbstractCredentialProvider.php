@@ -63,17 +63,14 @@ use GuzzleHttp\Promise;
  *      };
  * });
  * </code>
- *
- * @package CloudStorage\Credentials
  */
 abstract class AbstractCredentialProvider implements CredentialProviderInterface
 {
-    const ENV_KEY     = 'undefined';
-    const ENV_SECRET  = 'undefined';
+    const ENV_KEY = 'undefined';
+    const ENV_SECRET = 'undefined';
     const ENV_PROFILE = 'CLOUDSTORAGE_PROFILE';
 
     protected static $service = null;
-
 
     /**
      * @var array 自定义的凭证提供者。
@@ -195,13 +192,13 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
                 );
             }
 
-            return self::reject('Could not find environment variable credentials in ' .
-                static::ENV_KEY . '/' . static::ENV_SECRET);
+            return self::reject('Could not find environment variable credentials in '.
+                static::ENV_KEY.'/'.static::ENV_SECRET);
         };
     }
 
     /**
-     * todo ini 文件加载
+     * todo ini 文件加载.
      *
      * @param null $profile
      * @param null $filename
@@ -215,7 +212,7 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
         $credentialConcrete = static::getCredentialConcrete();
 
         return function () use ($profile, $filename, $credentialConcrete) {
-            if (!is_readable($filename)) {
+            if (! is_readable($filename)) {
                 return self::reject("Cannot read credentials from {$filename}");
             }
 
@@ -223,14 +220,14 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
             if ($data === false) {
                 return self::reject("Invalid credentials file: {$filename}");
             }
-            if (!isset($data[$profile])) {
+            if (! isset($data[$profile])) {
                 return self::reject("'{$profile}' not found in credentials file.");
             }
-            if (!isset($data[$profile][constant(static::ENV_KEY)])
-                || !isset($data[$profile][constant(static::ENV_SECRET)])
+            if (! isset($data[$profile][constant(static::ENV_KEY)])
+                || ! isset($data[$profile][constant(static::ENV_SECRET)])
             ) {
-                return self::reject("No credentials present in INI profile "
-                    . "'{$profile}' ($filename)");
+                return self::reject('No credentials present in INI profile '
+                    ."'{$profile}' ($filename)");
             }
 
             return Promise\promise_for(
@@ -286,8 +283,8 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
                     $provider, &$isConstant, &$result
                 ) {
                     // 判断是否是无过期凭证。
-                    if (!method_exists($credentials, 'getExpiration')
-                        || !$credentials->getExpiration()
+                    if (! method_exists($credentials, 'getExpiration')
+                        || ! $credentials->getExpiration()
                     ) {
                         $isConstant = true;
 
@@ -295,8 +292,8 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
                     }
 
                     // 未过期就返回。
-                    if (!method_exists($credentials, 'isExpired')
-                        || !$credentials->isExpired()
+                    if (! method_exists($credentials, 'isExpired')
+                        || ! $credentials->isExpired()
                     ) {
                         return $credentials;
                     }

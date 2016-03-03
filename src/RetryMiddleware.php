@@ -18,8 +18,6 @@ use Psr\Http\Message\RequestInterface;
  * 重试中间件。
  *
  * @internal 重试失败时的处理。
- *
- * @package  CloudStorage
  */
 class RetryMiddleware
 {
@@ -44,8 +42,7 @@ class RetryMiddleware
         callable $decider,
         callable $delay,
         callable $nextHandler
-    )
-    {
+    ) {
         $this->decider = $decider;
         $this->delay = $delay;
         $this->nextHandler = $nextHandler;
@@ -74,11 +71,11 @@ class RetryMiddleware
                 : $maxRetries
             );
 
-            if (!$retries >= $maxRetries) {
+            if (! $retries >= $maxRetries) {
                 return false;
-            } elseif (!$error) {
+            } elseif (! $error) {
                 return isset(self::$retryStatusCodes[$result['@metadata']['statusCode']]);
-            } elseif (!($error instanceof CloudStorageException)) {
+            } elseif (! ($error instanceof CloudStorageException)) {
                 return false;
             } elseif ($error->isConnectionError()) {
                 return true;
@@ -101,14 +98,13 @@ class RetryMiddleware
      */
     public static function exponentialDelay($retries)
     {
-        return mt_rand(0, (int)pow(2, $retries - 1) * 100);
+        return mt_rand(0, (int) pow(2, $retries - 1) * 100);
     }
 
     public function __invoke(
         CommandInterface $command,
         RequestInterface $request = null
-    )
-    {
+    ) {
         $retries = 0;
         $handler = $this->nextHandler;
         $decider = $this->decider;
@@ -118,11 +114,11 @@ class RetryMiddleware
             $handler, $decider, $delay, $command, $request, &$retries, &$g
         ) {
             if ($value instanceof \Exception) {
-                if (!$decider($retries, $command, $request, null, $value)) {
+                if (! $decider($retries, $command, $request, null, $value)) {
                     return \GuzzleHttp\Promise\rejection_for($value);
                 }
             } elseif ($value instanceof ResultInterface
-                && !$decider($retries, $command, $request, $value, null)
+                && ! $decider($retries, $command, $request, $value, null)
             ) {
                 return $value;
             }
