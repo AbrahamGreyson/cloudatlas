@@ -13,8 +13,6 @@ use CloudStorage\Contracts\Arrayable;
 
 /**
  * API 基类。
- *
- * @package CloudStorage\Api
  */
 abstract class AbstractModel implements \ArrayAccess, \Countable, Arrayable
 {
@@ -71,7 +69,7 @@ abstract class AbstractModel implements \ArrayAccess, \Countable, Arrayable
 
     protected function shapeAt($key)
     {
-        if (!isset($this->definition[$key])) {
+        if (! isset($this->definition[$key])) {
             throw new \InvalidArgumentException(
                 "Expected shape definition at {$key}"
             );

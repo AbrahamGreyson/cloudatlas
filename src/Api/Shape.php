@@ -7,13 +7,10 @@
  * @license: MIT
  */
 
-
 namespace CloudStorage\Api;
 
 /**
  * 代表 API 模型形状的基类。
- *
- * @package CloudStorage\Api
  */
 class Shape extends AbstractModel
 {
@@ -39,9 +36,9 @@ class Shape extends AbstractModel
             return $shapeMap->resolve($definition);
         }
 
-        if (!isset($map[$definition['type']])) {
+        if (! isset($map[$definition['type']])) {
             throw new \RuntimeException(
-                'Invalid type: ' . print_r($definition, true)
+                'Invalid type: '.print_r($definition, true)
             );
         }
 

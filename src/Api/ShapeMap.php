@@ -29,7 +29,7 @@ class ShapeMap
     {
         $shape = $shapeReference['shape'];
 
-        if (!isset($this->definitions[$shape])) {
+        if (! isset($this->definitions[$shape])) {
             throw new \InvalidArgumentException("Shape not found: {$shape}");
         }
 

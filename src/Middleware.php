@@ -17,8 +17,6 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * 内置的中间件函数。
- *
- * @package CloudStorage
  */
 final class Middleware
 {
@@ -35,8 +33,7 @@ final class Middleware
         Service $api,
         $bodyParameter = 'Body',
         $sourceParameter = 'SourceFile'
-    )
-    {
+    ) {
         return function (callable $handler) use (
             $api,
             $bodyParameter,
@@ -143,7 +140,6 @@ final class Middleware
             };
         };
     }
-
 
     /**
      * 重试中间件。根据提供的 decider 函数的布尔值结果，包装了请求的重试次数。

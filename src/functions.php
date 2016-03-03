@@ -20,9 +20,9 @@ function describeType($input)
 {
     switch (gettype($input)) {
         case 'object':
-            return 'object(' . get_class($input) . ')';
+            return 'object('.get_class($input).')';
         case 'array':
-            return 'array(' . count($input) . ')';
+            return 'array('.count($input).')';
         default:
             ob_start();
             var_dump($input);
@@ -46,7 +46,7 @@ function manifest($service = null)
     static $manifest = [];
     static $aliases = [];
     if (empty($manifest)) {
-        $manifest = require(__DIR__ . '/Api/data/manifest.php');
+        $manifest = require __DIR__.'/Api/data/manifest.php';
         foreach ($manifest as $endpoint => $info) {
             $alias = strtolower($info['namespace']);
             // todo endpoint
@@ -101,7 +101,6 @@ function orChain()
             }
         }
 
-        return null;
     };
 }
 
@@ -119,6 +118,6 @@ function loadApiFileOrThrow($path)
         return $apis;
     }
     throw new \InvalidArgumentException(
-        sprintf("File not found or can not be read: %s", $path)
+        sprintf('File not found or can not be read: %s', $path)
     );
 }

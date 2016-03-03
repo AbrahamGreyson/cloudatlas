@@ -11,13 +11,11 @@ namespace CloudStorage\Api;
 
 /**
  * 验证一组输入是否符合对应 API 要求。
- *
- * @package CloudStorage\Api
  */
 class Validator
 {
-    private $path       = [];
-    private $errors     = [];
+    private $path = [];
+    private $errors = [];
     private $constrains = [];
 
     private static $defaultConstrains = [
@@ -60,8 +58,8 @@ class Validator
 
         if ($this->errors) {
             $message = sprintf(
-                "Found %d error%s while validating the input provided for the "
-                . "%s operations: \n%s",
+                'Found %d error%s while validating the input provided for the '
+                ."%s operations: \n%s",
                 count($this->errors),
                 count($this->errors) > 1 ? 's' : '',
                 $name,
@@ -97,13 +95,13 @@ class Validator
 
     private function checkStructure(StructureShape $shape, $value)
     {
-        if (!$this->checkAssociativeArray($value)) {
+        if (! $this->checkAssociativeArray($value)) {
             return;
         }
 
         if ($this->constrains['required'] && $shape['required']) {
             foreach ($shape['required'] as $req) {
-                if (!isset($value[$req])) {
+                if (! isset($value[$req])) {
                     $this->path[] = $req;
                     $this->addError('is missing and is a required parameter');
                     array_pop($this->path);
@@ -125,14 +123,14 @@ class Validator
 
     private function checkList(ListShape $shape, $value)
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             $this->addError('must be an array. Found '
-                . \CloudStorage\describeType($value));
+                .\CloudStorage\describeType($value));
 
             return;
         }
 
-        $this->validateRange($shape, count($value), "list element count");
+        $this->validateRange($shape, count($value), 'list element count');
 
         $item = $shape->getMember();
         foreach ($value as $index => $v) {
@@ -141,10 +139,10 @@ class Validator
             array_pop($this->path);
         }
     }
-    
+
     private function checkMap(MapShape $shape, $value)
     {
-        if (!$this->checkAssociativeArray($value)) {
+        if (! $this->checkAssociativeArray($value)) {
             return;
         }
 
@@ -166,21 +164,21 @@ class Validator
         ];
 
         $type = gettype($value);
-        if (!isset($valid[$type])) {
-            if ($type != 'object' || !method_exists($value, '__toString')) {
+        if (! isset($valid[$type])) {
+            if ($type != 'object' || ! method_exists($value, '__toString')) {
                 $this->addError('must be an fopen resource, a '
-                    . 'GuzzleHttp\Stream\StreamInterface object, or something '
-                    . 'that can be cast to a string. Found '
-                    . \CloudStorage\describeType($value));
+                    .'GuzzleHttp\Stream\StreamInterface object, or something '
+                    .'that can be cast to a string. Found '
+                    .\CloudStorage\describeType($value));
             }
         }
     }
-    
+
     private function checkNumric(Shape $shape, $value)
     {
-        if (!is_numeric($value)) {
+        if (! is_numeric($value)) {
             $this->addError('must be numeric. Found '
-                . \CloudStorage\describeType($value));
+                .\CloudStorage\describeType($value));
 
             return;
         }
@@ -189,24 +187,24 @@ class Validator
 
     private function checkBoolean(Shape $shape, $value)
     {
-        if (!is_bool($value)) {
+        if (! is_bool($value)) {
             $this->addError('must be a boolean. Found '
-                . \CloudStorage\describeType($value));
+                .\CloudStorage\describeType($value));
         }
     }
 
     private function checkString(Shape $shape, $value)
     {
-        if (!$this->checkCanString($value)) {
+        if (! $this->checkCanString($value)) {
             $this->addError('must be a string or an object that implements '
-                . '__toString(). Found ' . \CloudStorage\describeType($value));
+                .'__toString(). Found '.\CloudStorage\describeType($value));
 
             return;
         }
 
         if ($this->constrains['pattern']) {
             $pattern = $shape['pattern'];
-            if ($pattern && !preg_match("/$pattern/", $value)) {
+            if ($pattern && ! preg_match("/$pattern/", $value)) {
                 $this->addError("Pattern /$pattern/ failed to match '$value'");
             }
         }
@@ -233,7 +231,7 @@ class Validator
             $min = $shape['min'];
             if ($min && $length < $min) {
                 $this->addError("expected $descriptor to be >= $min, but "
-                    . "found $descriptor of $length");
+                    ."found $descriptor of $length");
             }
         }
 
@@ -241,16 +239,16 @@ class Validator
             $max = $shape['max'];
             if ($max && $length > $max) {
                 $this->addError("expected $descriptor to be <= $max, but "
-                    . "found $descriptor of $length");
+                    ."found $descriptor of $length");
             }
         }
     }
 
     private function checkAssociativeArray($value)
     {
-        if (!is_array($value) || isset($value[0])) {
+        if (! is_array($value) || isset($value[0])) {
             $this->addError('must be an associate array. Found '
-                . \CloudStorage\describeType($value));
+                .\CloudStorage\describeType($value));
 
             return false;
         }
@@ -264,7 +262,7 @@ class Validator
             implode('', array_map(function ($s) {
                 return "[{$s}]";
             }, $this->path))
-            . ' '
-            . $message;
+            .' '
+            .$message;
     }
 }
