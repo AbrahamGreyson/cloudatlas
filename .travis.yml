@@ -7,8 +7,8 @@ php:
   - hhvm
 
 env:
-  COMPOSER_LOWEST="--prefer-lowest"
-  COMPOSER_LOWEST=""
+  - COMPOSER_LOWEST="--prefer-lowest"
+  - COMPOSER_LOWEST=""
 
 matrix:
   allow_failures:
