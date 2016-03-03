@@ -30,7 +30,8 @@ matrix:
 
 install:
   - export CLOUDSTORAGE_PROFILE=defa
-  - composer selfupdate
+  # speed up package installation process use parallel.
+  - composer global require hirak/prestissimo
   - composer update --prefer-source --no-interaction $COMPOSER_PREFER
 
 before_script:
