@@ -14,7 +14,6 @@ use CloudStorage\Contracts\ResultPaginator;
 
 class UpyunClient extends Client
 {
-    
     /**
      * 获取和对应云服务客户端相关联的服务描述。
      *
@@ -32,6 +31,7 @@ class UpyunClient extends Client
      * @param array  $args 每个命令所使用的命令参数。
      *
      * @return ResultPaginator
+     *
      * @throws \UnexpectedValueException 如果迭代器配置无效。
      */
     public function getPaginator($name, array $args = [])

@@ -8,23 +8,23 @@
  */
 
 return [
-    'version'       => 'default',
-    'metadata'      => [
-        'globalEndpoint'   => 'v0.api.upyun.com',
-        'timestampFormat'  => 'rfc882',
+    'version' => 'default',
+    'metadata' => [
+        'globalEndpoint' => 'v0.api.upyun.com',
+        'timestampFormat' => 'rfc882',
         'signatureVersion' => 'default',
     ],
     'operationsMap' => [
-        'PutObject'  => [
-            'name'             => 'PutObject',
-            'http'             => [
-                'method'     => 'PUT',
+        'PutObject' => [
+            'name' => 'PutObject',
+            'http' => [
+                'method' => 'PUT',
                 'requestUri' => '/{Bucket}/{key}',
             ],
-            'input'            => [
+            'input' => [
                 'shape' => 'PutObjectRequest',
             ],
-            'output'           => [
+            'output' => [
                 'shape' => 'PutObjectOutput',
             ],
             'documentationUrl' => 'https://www.google.com',

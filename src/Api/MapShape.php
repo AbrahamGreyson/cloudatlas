@@ -28,6 +28,7 @@ class MapShape extends Shape
 
     /**
      * @return Shape
+     *
      * @throws \RuntimeException 如果没有指定值。
      */
     public function getValue()

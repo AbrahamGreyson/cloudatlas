@@ -18,8 +18,6 @@ use Psr\Http\Message\RequestInterface;
  * 重试中间件。
  *
  * @internal 重试失败时的处理。
- *
- * @package  CloudStorage
  */
 class RetryMiddleware
 {
@@ -29,11 +27,11 @@ class RetryMiddleware
     ];
 
     private static $retryCodes = [
-        'RequestLimitExceeded'                   => true,
-        'Throttling'                             => true,
-        'ThrottlingException'                    => true,
+        'RequestLimitExceeded' => true,
+        'Throttling' => true,
+        'ThrottlingException' => true,
         'ProvisionedThroughputExceededException' => true,
-        'RequestThrottled'                       => true,
+        'RequestThrottled' => true,
     ];
 
     private $decider;
@@ -44,8 +42,7 @@ class RetryMiddleware
         callable $decider,
         callable $delay,
         callable $nextHandler
-    )
-    {
+    ) {
         $this->decider = $decider;
         $this->delay = $delay;
         $this->nextHandler = $nextHandler;
@@ -101,14 +98,13 @@ class RetryMiddleware
      */
     public static function exponentialDelay($retries)
     {
-        return mt_rand(0, (int)pow(2, $retries - 1) * 100);
+        return mt_rand(0, (int) pow(2, $retries - 1) * 100);
     }
 
     public function __invoke(
         CommandInterface $command,
         RequestInterface $request = null
-    )
-    {
+    ) {
         $retries = 0;
         $handler = $this->nextHandler;
         $decider = $this->decider;

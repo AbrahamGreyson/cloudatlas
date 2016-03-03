@@ -20,9 +20,9 @@ function describeType($input)
 {
     switch (gettype($input)) {
         case 'object':
-            return 'object(' . get_class($input) . ')';
+            return 'object('.get_class($input).')';
         case 'array':
-            return 'array(' . count($input) . ')';
+            return 'array('.count($input).')';
         default:
             ob_start();
             var_dump($input);
@@ -38,6 +38,7 @@ function describeType($input)
  * @param string $service 大小写不敏感的服务命名空间或终端前缀。
  *
  * @return array
+ *
  * @throws \InvalidArgumentException 服务不支持。
  */
 function manifest($service = null)
@@ -46,7 +47,7 @@ function manifest($service = null)
     static $manifest = [];
     static $aliases = [];
     if (empty($manifest)) {
-        $manifest = require(__DIR__ . '/Api/data/manifest.php');
+        $manifest = require __DIR__.'/Api/data/manifest.php';
         foreach ($manifest as $endpoint => $info) {
             $alias = strtolower($info['namespace']);
             // todo endpoint
@@ -101,7 +102,7 @@ function orChain()
             }
         }
 
-        return null;
+        return;
     };
 }
 
@@ -111,6 +112,7 @@ function orChain()
  * @param string $path 要载入的文件。
  *
  * @return array API 配置关联数组。
+ *
  * @throws \InvalidArgumentException 没找到文件或文件不可读。
  */
 function loadApiFileOrThrow($path)
@@ -119,6 +121,6 @@ function loadApiFileOrThrow($path)
         return $apis;
     }
     throw new \InvalidArgumentException(
-        sprintf("File not found or can not be read: %s", $path)
+        sprintf('File not found or can not be read: %s', $path)
     );
 }

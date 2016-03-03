@@ -27,6 +27,7 @@ class TimestampShape extends Shape
      * @param string $format 使用的格式。
      *
      * @return int|string
+     *
      * @throws \UnexpectedValueException 如果格式未找到。
      * @throws \InvalidArgumentException 如果值的格式不支持。
      */
@@ -38,7 +39,7 @@ class TimestampShape extends Shape
             $value = strtotime($value);
         } elseif (!is_int($value)) {
             throw new \InvalidArgumentException('Unable to handle the provided'
-                . ' timestamp type: ' . gettype($value));
+                .' timestamp type: '.gettype($value));
         }
 
         switch ($format) {
@@ -51,7 +52,7 @@ class TimestampShape extends Shape
                 return $value;
             default:
                 throw new \UnexpectedValueException('Unknown timestamp format: '
-                    . $format);
+                    .$format);
         }
     }
 }

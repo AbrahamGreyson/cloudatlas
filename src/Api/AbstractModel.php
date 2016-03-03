@@ -13,8 +13,6 @@ use CloudStorage\Contracts\Arrayable;
 
 /**
  * API 基类。
- *
- * @package CloudStorage\Api
  */
 abstract class AbstractModel implements \ArrayAccess, \Countable, Arrayable
 {
