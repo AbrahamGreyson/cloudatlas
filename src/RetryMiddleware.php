@@ -44,8 +44,7 @@ class RetryMiddleware
         callable $decider,
         callable $delay,
         callable $nextHandler
-    )
-    {
+    ) {
         $this->decider = $decider;
         $this->delay = $delay;
         $this->nextHandler = $nextHandler;
@@ -107,8 +106,7 @@ class RetryMiddleware
     public function __invoke(
         CommandInterface $command,
         RequestInterface $request = null
-    )
-    {
+    ) {
         $retries = 0;
         $handler = $this->nextHandler;
         $decider = $this->decider;
