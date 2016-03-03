@@ -35,8 +35,7 @@ final class Middleware
         Service $api,
         $bodyParameter = 'Body',
         $sourceParameter = 'SourceFile'
-    )
-    {
+    ) {
         return function (callable $handler) use (
             $api,
             $bodyParameter,
