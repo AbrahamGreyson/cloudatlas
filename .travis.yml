@@ -1,24 +1,45 @@
+# see http://about.travis-ci.org/docs/user/languages/php/ for more hints.
 language: php
 
+# list any PHP version you want to test against.
 php:
+  # using major version aliases.
+  # This version shipped with Ubuntu 14.04 LTS.
+  - 5.5.9
+  # after php 5.5, aliased to a recent version.
   - 5.5
   - 5.6
   - 7.0
+  - nightly
   - hhvm
 
 env:
-  - COMPOSER_LOWEST="--prefer-lowest"
-  - COMPOSER_LOWEST=""
+  - COMPOSER_PREFER="--prefer-lowest"
+  - COMPOSER_PREFER=""
 
 matrix:
+  # failures not break entire test suite.
   allow_failures:
+    - php: nightly
     - php: hhvm
   fast_finish: true
+  inlucde:
+    # @see [php]
+    - php: 5.5.9
+      env: COMPOSER_PREFER="--prefer-stable"
 
 install:
   - export CLOUDSTORAGE_PROFILE=defa
   - composer selfupdate
-  - composer update --prefer-source --no-interaction $COMPOSER_LOWEST
+  - composer update --prefer-source --no-interaction $COMPOSER_PREFER
+
+before_script:
+  # disable xdebug since it override var_dump() function we rely on to parse object.
+  - phpenv config-rm xdebug.ini
 
 script:
   - ./vendor/bin/phpunit
+
+notifications:
+  email:
+    on_success: never
