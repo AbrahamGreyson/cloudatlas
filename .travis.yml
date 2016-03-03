@@ -8,14 +8,14 @@ php:
 
 env:
   COMPOSER_LOWEST="--prefer-lowest"
-  COMPOSER__LOWEST=""
+  COMPOSER_LOWEST=""
 
 matrix:
   allow_failures:
     - php: hhvm
   fast_finish: true
 
-before_script:
+install:
   - export CLOUDSTORAGE_PROFILE=defa
   - composer selfupdate
   - composer update --prefer-source --no-interaction $COMPOSER_LOWEST
