@@ -16,4 +16,9 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(UnresolvedApiException::class);
         ApiProvider::resolve($p, 'a', 's', 'v');
     }
+
+    public function testIsTrue()
+    {
+        $this->assertTrue(true);
+    }
 }
