@@ -1,7 +1,7 @@
 SDK
 ===============
 
-[![StyleCI](https://styleci.io/repos/50803540/shield)](https://styleci.io/repos/50803540)
+[![StyleCI PSR2](https://styleci.io/repos/50803540/shield)](https://styleci.io/repos/50803540)
 [![Build Status](https://travis-ci.org/AbrahamGreyson/cloudstorage.svg?branch=master)](https://travis-ci.org/AbrahamGreyson/cloudstorage)
 [![Code Coverage](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudstorage/?branch=master)

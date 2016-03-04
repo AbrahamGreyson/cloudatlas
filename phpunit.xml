@@ -17,13 +17,18 @@
     <testsuites>
         <testsuite name="CloudStorage Test Suite">
             <directory suffix="Test.php">./tests</directory>
-            <exclude>./tests/functional</exclude>
+            <exclude>./tests/functional/</exclude>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
             <directory suffix=".php">./src</directory>
-            <exclude>./src/functions.php</exclude>
+            <exclude>
+                <file>./src/functions.php</file>
+                <directory>./src/Api/data</directory>
+                <directory suffix="Exception.php">./src</directory>
+                <directory suffix="Interface.php">./src</directory>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
