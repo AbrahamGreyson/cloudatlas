@@ -14,8 +14,20 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $id = PHPUnit_Runner_Version::id();
-        $second = strpos($id, '.') + 1;
-        $this->phpunitSeries = substr($id, 0, strpos($id, '.', $second));
+        if (2 === substr_count($id, '.')) {
+            // x.x.x
+            $second = strpos($id, '.') + 1;
+            $this->phpunitSeries = substr($id, 0, strpos($id, '.', $second));
+        } elseif (1 === substr_count($id, '.')) {
+            // x.x
+            $this->phpunitSeries = $id;
+        } else {
+            // x
+            $this->phpunitSeries = $id . '.0';
+        }
+        if ('' == $this->phpunitSeries) {
+            $this->phpunitSeries = '4.0';
+        }
     }
 
     public function tearDown()
@@ -40,7 +52,7 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
     public function expectExceptionMessage($message)
     {
         if ($this->phpunitSeries < 5.2) {
-            $this->setExpectedException($this->getExpectedException(), $message);
+            $this->setExpectedException(self::getExpectedException(), $message);
         } else {
             parent::expectExceptionMessage($message);
         }
