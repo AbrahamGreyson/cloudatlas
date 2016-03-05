@@ -20,7 +20,7 @@ class ApiProviderTest extends AbstractTestCase
     private function getTestApiProvider($useManifest = true)
     {
         $dir = __DIR__ . '/api_provider_fixtures';
-        $manifest = include $dir . '/manifest.php';
+        $manifest = @include($dir . '/manifest.php');
         return $useManifest
             ? ApiProvider::manifest($dir, $manifest)
             : ApiProvider::filesystem($dir);
