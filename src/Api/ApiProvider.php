@@ -89,7 +89,7 @@ class ApiProvider
         $this->modelsDir = rtrim($modelsDir, '/');
         if (!is_dir($this->modelsDir)) {
             throw new \InvalidArgumentException(
-                "The specified models directory , {$modelsDir} , was not found"
+                "The specified models directory , {$modelsDir} , was not found."
             );
         }
     }
@@ -107,6 +107,11 @@ class ApiProvider
     public static function filesystem($dir)
     {
         return new self($dir);
+    }
+
+    public static function manifest($dir, $manifest)
+    {
+        return new self($dir, $manifest);
     }
 
     /**
@@ -224,7 +229,6 @@ class ApiProvider
                 ],
             ];
             $this->manifest[$service]['versions'] += array_combine($results, $results);
-            dd($this->manifest);
         }
     }
 }

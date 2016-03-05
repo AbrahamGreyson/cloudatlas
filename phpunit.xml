@@ -17,7 +17,6 @@
     <testsuites>
         <testsuite name="CloudStorage Test Suite">
             <directory suffix="Test.php">./tests</directory>
-            <exclude>./tests/functional/</exclude>
         </testsuite>
     </testsuites>
     <filter>

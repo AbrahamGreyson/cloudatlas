@@ -19,6 +19,7 @@ env:
     - composer_prefer=""
 
 matrix:
+  global:
   # failures not break entire test suite.
   allow_failures:
     - php: nightly
