@@ -13,7 +13,9 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->phpunitSeries = PHPUnit_Runner_Version::series();
+        $id = PHPUnit_Runner_Version::id();
+        $second = strpos($id, '.') + 1;
+        $this->phpunitSeries = substr($id, 0, strpos($id, '.', $second));
     }
 
     public function tearDown()
