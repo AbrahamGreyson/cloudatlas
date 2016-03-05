@@ -34,5 +34,4 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
             parent::expectException($exception);
         }
     }
-
 }
