@@ -113,5 +113,4 @@ class ApiProviderTest extends AbstractTestCase
         $this->assertnull($p('api', 'no-service', 'latest'));
         $this->assertNull($p('api', 'service_no_version', 'latest'));
     }
-
 }
