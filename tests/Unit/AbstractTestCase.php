@@ -36,4 +36,13 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
             parent::expectException($exception);
         }
     }
+
+    public function expectExceptionMessage($message)
+    {
+        if ($this->phpunitSeries < 5.2) {
+            $this->setExpectedException($this->getExpectedException(), $message);
+        } else {
+            parent::expectExceptionMessage($message);
+        }
+    }
 }
