@@ -37,4 +37,3 @@ class CredentialTest extends AbstractTestCase
         $this->assertEquals($object, $credential);
     }
 }
-
