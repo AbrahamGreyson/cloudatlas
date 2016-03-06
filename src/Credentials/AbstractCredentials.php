@@ -55,7 +55,7 @@ abstract class AbstractCredentials implements
         ];
     }
 
-    public function __set_state(array $state)
+    public static function __set_state(array $state)
     {
         return new static($state['key'], $state['secret']);
     }
