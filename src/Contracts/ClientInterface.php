@@ -1,16 +1,16 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Contracts;
+namespace CloudAtlas\Contracts;
 
-use CloudStorage\HandlerList;
-use CloudStorage\ResultPaginator;
+use CloudAtlas\HandlerList;
+use CloudAtlas\ResultPaginator;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\UriInterface;
 
@@ -84,7 +84,7 @@ interface ClientInterface
 
     /**
      * 获取和对应云服务客户端相关联的服务描述。
-     * @return \CloudStorage\Api\Service
+     * @return \CloudAtlas\Api\Service
      */
     public function getApi();
 

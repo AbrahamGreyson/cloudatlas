@@ -1,20 +1,20 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Facilities;
+namespace CloudAtlas\Facilities;
 
 /**
- * 实现了 {@see CloudStorage\Contracts\Arrayable } 接口，
+ * 实现了 {@see CloudAtlas\Contracts\Arrayable } 接口，
  * 实现了 \ArrayAccess, \Countable，\IteratorAggregate。
  * 用来降低同样要求实现这几个接口的类的代码重复。
  *
- * @package CloudStorage
+ * @package CloudAtlas
  */
 trait DataTrait
 {

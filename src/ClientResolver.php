@@ -1,28 +1,28 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage;
+namespace CloudAtlas;
 
-use CloudStorage\Api\ApiProvider;
-use CloudStorage\Api\Service;
-use CloudStorage\Api\Validator;
-use CloudStorage\Credentials\AbstractCredentialProvider;
-use CloudStorage\Credentials\CredentialsInterface;
-use CloudStorage\Exceptions\CloudStorageException;
-use CloudStorage\Signatures\SignatureProvider;
+use CloudAtlas\Api\ApiProvider;
+use CloudAtlas\Api\Service;
+use CloudAtlas\Api\Validator;
+use CloudAtlas\Credentials\AbstractCredentialProvider;
+use CloudAtlas\Credentials\CredentialsInterface;
+use CloudAtlas\Exceptions\CloudAtlasException;
+use CloudAtlas\Signatures\SignatureProvider;
 
 /**
  * 客户端构造者。
  *
  * @internal 内部使用，解析一系列默认配置至客户端。
  *
- * @package  CloudStorage
+ * @package  CloudAtlas
  */
 class ClientResolver
 {
@@ -53,12 +53,12 @@ class ClientResolver
             'valid'    => ['string'],
             'required' => true,
             'internal' => true,
-            'doc'      => '初始化的云服务名称。通过对应的云服务客户端使用 CloudStorage 时，这个值是默认自动填充的（如：Cloudstorage\\Upyun\\UpyunClient）填充为 upyun。',
+            'doc'      => '初始化的云服务名称。通过对应的云服务客户端使用 CloudAtlas 时，这个值是默认自动填充的（如：Cloudstorage\\Upyun\\UpyunClient）填充为 upyun。',
         ],
         'exceptionClass'    => [
             'type'     => 'value',
             'valid'    => ['string'],
-            'default'  => CloudStorageException::class,
+            'default'  => CloudAtlasException::class,
             'internal' => true,
             'doc'      => '报错时使用的异常类。',
         ],
@@ -66,7 +66,7 @@ class ClientResolver
             'type'    => 'value',
             'valid'   => ['string'],
             'default' => 'https',
-            'doc'     => '连接云服务时使用的 URI 模式。CloudStorage 将默认启用 https（如 SSL/TLS 连接）连接云服务的端点。你可以通过设置 ``scheme`` 为 http 不加密连接云服务，但是极不推荐。',
+            'doc'     => '连接云服务时使用的 URI 模式。CloudAtlas 将默认启用 https（如 SSL/TLS 连接）连接云服务的端点。你可以通过设置 ``scheme`` 为 http 不加密连接云服务，但是极不推荐。',
         ],
         'version'           => [
             'type'     => 'value',
@@ -85,7 +85,7 @@ class ClientResolver
             'type'    => 'value',
             'value'   => ['callable'],
             'default' => [__CLASS__, 'defaultSignatureProvider'],
-            'doc'     => '签名提供者。一个 callable 类型的函数，接受云服务名称（如 upyun）和签名版本（例如 base）为参数，并返回 SignatureInterface 对象或 null。这个签名提供者被客户端用来创建签名。CloudStorage\\Signature\\SignatureProvider 中列举了一组内置的提供者。',
+            'doc'     => '签名提供者。一个 callable 类型的函数，接受云服务名称（如 upyun）和签名版本（例如 base）为参数，并返回 SignatureInterface 对象或 null。这个签名提供者被客户端用来创建签名。CloudAtlas\\Signature\\SignatureProvider 中列举了一组内置的提供者。',
         ],
         'signatureVersion'  => [
             'type'    => 'config',
@@ -105,8 +105,8 @@ class ClientResolver
             'fn'      => [__CLASS__, 'applyCredentials'],
             'default' => [__CLASS__, 'defaultCredentialProvider'],
             'doc'     => '指定用来签名请求的凭证。可以提供
-            CloudStorage\\Credentials\\CredentialsInterface 对象，一个包含
-            key，secret 的关联数组，`false` 作为空凭证，或一个 callable 凭证提供者创建凭证或返回 null。CloudStorage\\Credentials\\AbstractCredentialProvider 中列举了一组内置的凭证提供者。如果没有提供凭证，CloudStorage 将试图从环境变量中加载它们。',
+            CloudAtlas\\Credentials\\CredentialsInterface 对象，一个包含
+            key，secret 的关联数组，`false` 作为空凭证，或一个 callable 凭证提供者创建凭证或返回 null。CloudAtlas\\Credentials\\AbstractCredentialProvider 中列举了一组内置的凭证提供者。如果没有提供凭证，CloudAtlas 将试图从环境变量中加载它们。',
         ],
         'retries'           => [
             'type'    => 'value',
@@ -131,7 +131,7 @@ class ClientResolver
         'http'              => [
             'type'  => 'value',
             'valid' => ['array'],
-            'doc'   => '设置一个关联数组作为 CloudStorage 客户端每个请求的选项（例如 proxy，verify 等）。',
+            'doc'   => '设置一个关联数组作为 CloudAtlas 客户端每个请求的选项（例如 proxy，verify 等）。',
         ],
         'httpHandler'       => [
             'type'  => 'value',
@@ -144,10 +144,10 @@ class ClientResolver
             'valid'   => ['callable'],
             'fn'      => [__CLASS__, 'applyHandler'],
             'default' => [__CLASS__, 'defaultHandler'],
-            'doc'     => '处理器，接受 CloudStorage\\Contracts\\CommandInterface 和
+            'doc'     => '处理器，接受 CloudAtlas\\Contracts\\CommandInterface 和
             PSR-7 请求对象作为参数，返回一个 promise， 代表已完成的
-            CloudStorage\\Contracts\\ResultInterface 对象或已失败的
-            CloudStorage\\Exceptions\\CloudStorageException
+            CloudAtlas\\Contracts\\ResultInterface 对象或已失败的
+            CloudAtlas\\Exceptions\\CloudAtlasException
             。处理器并不接收下一个处理器，因为其是最终的，用来完成一个命令的函数。如果没有提供处理器，则使用默认的 Guzzle 处理器。',
         ],
     ];
@@ -195,7 +195,7 @@ class ClientResolver
      *
      * @return array 返回处理（和默认选项交叉）过的选项。
      * @throws \InvalidArgumentException
-     * @see CloudStorage\Client::__construct 一组可用选项。
+     * @see CloudAtlas\Client::__construct 一组可用选项。
      */
     public function resolve(array $arguments, HandlerList $list)
     {
@@ -344,7 +344,7 @@ most recent available API version that your client's API provider can find.
 Note: Using 'latest' in a production application is not recommended.
 
 A list of available API versions can be found on each client's API documentation
-page: https://github.com/AbrahamGreyson/cloudstorage . If you are
+page: https://github.com/AbrahamGreyson/cloudatlas . If you are
 unable to load a specific API version, then you may need to update your copy of
 the SDK.
 TIPS;
@@ -392,7 +392,7 @@ TIPS;
     public static function defaultCredential(array $arguments)
     {
         $service = $arguments['service'];
-        $credentialConcrete = "\\CloudStorage\\" . ucfirst($service) . '\\Credential';
+        $credentialConcrete = "\\CloudAtlas\\" . ucfirst($service) . '\\Credential';
 
         return $credentialConcrete::defaultProvider();
     }
@@ -400,7 +400,7 @@ TIPS;
     public static function applyCredentials($value, array &$arguments)
     {
         $service = $arguments['service'];
-        $credentialConcrete = "\\CloudStorage\\" . ucfirst($service) . "\\Credential";
+        $credentialConcrete = "\\CloudAtlas\\" . ucfirst($service) . "\\Credential";
         if (is_callable($value)) {
             return;
         } elseif ($value instanceof CredentialsInterface) {
@@ -421,7 +421,7 @@ TIPS;
             );
         } else {
             throw new \InvalidArgumentException('Credentials must be an instance of '
-                . 'CloudStorage\Credentials\CredentialsInterface, an associative '
+                . 'CloudAtlas\Credentials\CredentialsInterface, an associative '
                 . 'array that contains "key", "secret", and an optional "token" '
                 . 'key-value pairs, a credentials provider function, or false.');
         }

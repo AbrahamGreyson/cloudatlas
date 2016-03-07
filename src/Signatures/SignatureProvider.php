@@ -1,15 +1,15 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Signatures;
+namespace CloudAtlas\Signatures;
 
-use CloudStorage\Exceptions\UnresolvedSignatureException;
+use CloudAtlas\Exceptions\UnresolvedSignatureException;
 
 /**
  * 签名提供者。
@@ -19,10 +19,10 @@ use CloudStorage\Exceptions\UnresolvedSignatureException;
  *
  * 你可以使用 {@see SignatureProvider::resolve} 包装对签名提供者的调用，去确保签名对象
  * 已经被创建。如果无法创建签名对象，则 resolve() 方法会抛出
- * {@see CloudStorage\Exceptions\UnresolvedSignatureException} 异常。
+ * {@see CloudAtlas\Exceptions\UnresolvedSignatureException} 异常。
  *
  * <code>
- * use CloudStorage\Signatures\SignatureProvider;
+ * use CloudAtlas\Signatures\SignatureProvider;
  * $provider = SignatureProvider::defaultProvider();
  * // 返回 SignatureInterface 或 null。
  * $signer = $provider('v1', 'upyun');
@@ -30,7 +30,7 @@ use CloudStorage\Exceptions\UnresolvedSignatureException;
  * $signer = SignatureProvider::resolve($provider, 'v100', 'upyun');
  * </code>
  *
- * 你可以使用 {@see CloudStorage\orChain} 组合多个签名提供者至单独的一个。该函数接受不定
+ * 你可以使用 {@see CloudAtlas\orChain} 组合多个签名提供者至单独的一个。该函数接受不定
  * 个数的签名提供者作为参数，返回一个新函数，该函数将会依次调用签名提供者直到一个非空的值被返回。
  *
  * <code>
@@ -40,13 +40,13 @@ use CloudStorage\Exceptions\UnresolvedSignatureException;
  *          return new MyFooSignature();
  *      }
  * }
- * $c = \CloudStorage\orChain($a, $b);
+ * $c = \CloudAtlas\orChain($a, $b);
  * $signer = $c('v1', 'abc'); // $a 提供者处理这个调用。
  * $signer = $c('foo', 'abc'); // $b 提供者处理这个调用。
  * $nullValue = $c('v100', '???'); // 没有提供者能处理，返回 null。
  * </code>
  *
- * @package CloudStorage\Signatures
+ * @package CloudAtlas\Signatures
  */
 class SignatureProvider
 {
@@ -117,7 +117,7 @@ class SignatureProvider
     public static function version()
     {
         return function ($version, $service) {
-            $namespace = "\\CloudStorage\\" . ucfirst($service);
+            $namespace = "\\CloudAtlas\\" . ucfirst($service);
             $defaultSignature = $namespace . '\\Signature';
             $basicSignature = $namespace . '\\BasicSignature';
             if ('v1' === $version && class_exists($defaultSignature)) {

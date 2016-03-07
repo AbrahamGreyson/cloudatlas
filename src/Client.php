@@ -1,29 +1,29 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage;
+namespace CloudAtlas;
 
-use CloudStorage\Contracts\ClientInterface;
-use CloudStorage\Contracts\CommandInterface;
-use CloudStorage\Contracts\ResultInterface;
-use CloudStorage\Exceptions\CloudStorageException;
+use CloudAtlas\Contracts\ClientInterface;
+use CloudAtlas\Contracts\CommandInterface;
+use CloudAtlas\Contracts\ResultInterface;
+use CloudAtlas\Exceptions\CloudAtlasException;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 
 /**
- * CloudStorage 客户端，用来和云服务进行交互。
+ * CloudAtlas 客户端，用来和云服务进行交互。
  * @method Promise PutObject($bucket, $key, $stream);
  * @method Promise Copy($key, $to);
  *
- * @package CloudStorage
+ * @package CloudAtlas
  */
 class Client implements ClientInterface
 {
@@ -77,7 +77,7 @@ class Client implements ClientInterface
      *   设置这个参数，否则将使用各个云服务默认的。
      * - handler：（callable） 一个接收 CommandInterface 和 RequestInterface，并返回
      *   promise 的函数，promise 代表一个完成了的 ResultInterface 或失败了的
-     *   CloudStorageException。处理器并不接收下一个处理器，它是被期望完成命令的终端。
+     *   CloudAtlasException。处理器并不接收下一个处理器，它是被期望完成命令的终端。
      *   如果没有提供处理器，则使用默认的 Guzzle 处理器。
      * - profile：（string）当凭证是从配置文件中加载时，允许你指定具体使用哪一个身份信息。
      *   这个设置还会覆写 CLOUD_PROFILE 环境变量。注意：指定 profile 会导致 credentials
@@ -306,7 +306,7 @@ class Client implements ClientInterface
     /**
      * 获取和对应云服务客户端相关联的服务描述。
      *
-     * @return \CloudStorage\Api\Service
+     * @return \CloudAtlas\Api\Service
      */
     public function getApi()
     {
@@ -323,14 +323,14 @@ class Client implements ClientInterface
         $class = get_class($this);
 
         if ($class === __CLASS__) {
-            return ['', CloudStorageException::class];
+            return ['', CloudAtlasException::class];
         }
 
         $service = substr($class, strrpos($class, '\\') + 1, -6);
 
         return [
             strtolower($service),
-            "\\CloudStorage\\{$service}\\Exceptions\\{$service}Exception",
+            "\\CloudAtlas\\{$service}\\Exceptions\\{$service}Exception",
         ];
     }
 }

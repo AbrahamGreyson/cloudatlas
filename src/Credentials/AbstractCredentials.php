@@ -1,21 +1,21 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Credentials;
+namespace CloudAtlas\Credentials;
 
-use CloudStorage\Contracts\Arrayable;
+use CloudAtlas\Contracts\Arrayable;
 
 /**
  * 凭证接口的基本实现，允许客户端代码传递各个云服务的公钥和密钥进来。
  * 这个类必须被继承，必须使用子类。
  *
- * @package CloudStorage\Credentials
+ * @package CloudAtlas\Credentials
  */
 abstract class AbstractCredentials implements
     CredentialsInterface,

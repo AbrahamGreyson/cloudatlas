@@ -1,10 +1,10 @@
 <?php
 
-namespace CloudStorage\Test\Unit\Api;
+namespace CloudAtlas\Test\Unit\Api;
 
-use CloudStorage\Api\ApiProvider;
-use CloudStorage\Exceptions\UnresolvedApiException;
-use CloudStorage\Test\Unit\AbstractTestCase;
+use CloudAtlas\Api\ApiProvider;
+use CloudAtlas\Exceptions\UnresolvedApiException;
+use CloudAtlas\Test\Unit\AbstractTestCase;
 
 class ApiProviderTest extends AbstractTestCase
 {

@@ -1,13 +1,13 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Contracts;
+namespace CloudAtlas\Contracts;
 
 /**
  * 表示执行特定 REST API 操作返回的结果。

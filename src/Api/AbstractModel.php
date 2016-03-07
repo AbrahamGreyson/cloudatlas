@@ -1,20 +1,20 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Api;
+namespace CloudAtlas\Api;
 
-use CloudStorage\Contracts\Arrayable;
+use CloudAtlas\Contracts\Arrayable;
 
 /**
  * API 基类。
  *
- * @package CloudStorage\Api
+ * @package CloudAtlas\Api
  */
 abstract class AbstractModel implements \ArrayAccess, \Countable, Arrayable
 {

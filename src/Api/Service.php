@@ -1,18 +1,18 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Api;
+namespace CloudAtlas\Api;
 
 /**
  * 代表一个云服务的 API 模型。
  *
- * @package CloudStorage\Api
+ * @package CloudAtlas\Api
  */
 class Service extends AbstractModel
 {

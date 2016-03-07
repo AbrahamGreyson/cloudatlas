@@ -1,10 +1,10 @@
 {
-  "name": "ag/cloudstorage",
+  "name": "ag/cloudatlas",
   "description": "The cloud service develop package.",
   "license": "MIT",
   "support": {
-    "issues": "https://github.com/AbrahamGreyson/cloudstorageissues",
-    "source": "https://github.com/AbrahamGreyson/cloudstorage"
+    "issues": "https://github.com/AbrahamGreyson/cloudatlasissues",
+    "source": "https://github.com/AbrahamGreyson/cloudatlas"
   },
   "authors": [
     {
@@ -25,13 +25,13 @@
   },
   "autoload": {
     "psr-4": {
-      "CloudStorage\\": "src/"
+      "CloudAtlas\\": "src/"
     },
     "files": ["src/functions.php"]
   },
   "autoload-dev": {
     "psr-4": {
-      "CloudStorage\\Test\\": "tests/"
+      "CloudAtlas\\Test\\": "tests/"
     }
   },
   "extra": {

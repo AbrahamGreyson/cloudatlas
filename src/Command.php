@@ -1,21 +1,21 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage;
+namespace CloudAtlas;
 
-use CloudStorage\Contracts\CommandInterface;
-use CloudStorage\Facilities\DataTrait;
+use CloudAtlas\Contracts\CommandInterface;
+use CloudAtlas\Facilities\DataTrait;
 
 /**
  * 命令对象。
  *
- * @package CloudStorage
+ * @package CloudAtlas
  */
 class Command implements CommandInterface
 {

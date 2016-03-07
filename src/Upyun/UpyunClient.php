@@ -1,16 +1,16 @@
 <?PHP
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Upyun;
+namespace CloudAtlas\Upyun;
 
-use CloudStorage\Client;
-use CloudStorage\Contracts\ResultPaginator;
+use CloudAtlas\Client;
+use CloudAtlas\Contracts\ResultPaginator;
 
 class UpyunClient extends Client
 {
@@ -18,7 +18,7 @@ class UpyunClient extends Client
     /**
      * 获取和对应云服务客户端相关联的服务描述。
      *
-     * @return \CloudStorage\Api\Service
+     * @return \CloudAtlas\Api\Service
      */
     public function getApi()
     {

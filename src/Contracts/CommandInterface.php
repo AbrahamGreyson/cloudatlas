@@ -1,22 +1,22 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Contracts;
+namespace CloudAtlas\Contracts;
 
-use CloudStorage\HandlerList;
+use CloudAtlas\HandlerList;
 
 /**
  * 一个命令对象，用来代表创建 HTTP 请求的输入参数以及处理 HTTP 响应。
  *
  * 使用 toArray() 方法将会以关联数组的形式返回该命令的输入参数。
  *
- * @package CloudStorage
+ * @package CloudAtlas
  */
 interface CommandInterface extends \ArrayAccess, \Countable, \IteratorAggregate
 {

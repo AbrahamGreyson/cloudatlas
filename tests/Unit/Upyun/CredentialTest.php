@@ -1,9 +1,9 @@
 <?php
 
-namespace CloudStorage\Test\Unit\Upyun;
+namespace CloudAtlas\Test\Unit\Upyun;
 
-use CloudStorage\Test\Unit\AbstractTestCase;
-use CloudStorage\Upyun\Credential;
+use CloudAtlas\Test\Unit\AbstractTestCase;
+use CloudAtlas\Upyun\Credential;
 
 class CredentialTest extends AbstractTestCase
 {
@@ -33,7 +33,7 @@ class CredentialTest extends AbstractTestCase
         var_export($credential);
         $code = ob_get_clean() . ';';
         eval('$object = ' . $code);
-        /** @var \CloudStorage\Upyun\Credential $object */
+        /** @var \CloudAtlas\Upyun\Credential $object */
         $this->assertEquals($object, $credential);
     }
 }

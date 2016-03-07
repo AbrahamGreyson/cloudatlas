@@ -1,8 +1,8 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
@@ -13,9 +13,9 @@
  * @date  : 02/17/2016
  */
 
-namespace CloudStorage\Upyun;
+namespace CloudAtlas\Upyun;
 
-use CloudStorage\Credentials\AbstractCredentialProvider;
+use CloudAtlas\Credentials\AbstractCredentialProvider;
 
 class UpyunCredentialProvider extends AbstractCredentialProvider
 {

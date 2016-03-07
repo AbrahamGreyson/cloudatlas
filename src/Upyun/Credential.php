@@ -1,15 +1,15 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Upyun;
+namespace CloudAtlas\Upyun;
 
-use CloudStorage\Credentials\AbstractCredentials;
+use CloudAtlas\Credentials\AbstractCredentials;
 
 class Credential extends AbstractCredentials
 {

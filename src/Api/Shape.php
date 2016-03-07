@@ -1,19 +1,19 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
 
-namespace CloudStorage\Api;
+namespace CloudAtlas\Api;
 
 /**
  * 代表 API 模型形状的基类。
  *
- * @package CloudStorage\Api
+ * @package CloudAtlas\Api
  */
 class Shape extends AbstractModel
 {

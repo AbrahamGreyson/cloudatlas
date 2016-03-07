@@ -1,24 +1,24 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage;
+namespace CloudAtlas;
 
-use CloudStorage\Api\Service;
-use CloudStorage\Contracts\CommandInterface;
-use CloudStorage\Credentials\CredentialsInterface;
+use CloudAtlas\Api\Service;
+use CloudAtlas\Contracts\CommandInterface;
+use CloudAtlas\Credentials\CredentialsInterface;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use Psr\Http\Message\RequestInterface;
 
 /**
  * 内置的中间件函数。
  *
- * @package CloudStorage
+ * @package CloudAtlas
  */
 final class Middleware
 {

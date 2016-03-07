@@ -15,7 +15,7 @@
          verbose="true"
 >
     <testsuites>
-        <testsuite name="CloudStorage Test Suite">
+        <testsuite name="CloudAtlas Test Suite">
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>

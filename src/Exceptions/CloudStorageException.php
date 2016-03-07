@@ -1,16 +1,16 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Exceptions;
+namespace CloudAtlas\Exceptions;
 
 use RuntimeException;
 
-class CloudStorageException extends RuntimeException implements CloudStorageExceptionInterface
+class CloudAtlasException extends RuntimeException implements CloudAtlasExceptionInterface
 {
 }

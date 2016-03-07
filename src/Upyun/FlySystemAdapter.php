@@ -1,21 +1,21 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage;
+namespace CloudAtlas;
 
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Config;
 
 /**
- * CloudStorage SDK 的 FlySystem 文件库适配器。
+ * CloudAtlas SDK 的 FlySystem 文件库适配器。
  *
- * @package CloudStorage
+ * @package CloudAtlas
  */
 class FlySystemAdapter extends AbstractAdapter
 {

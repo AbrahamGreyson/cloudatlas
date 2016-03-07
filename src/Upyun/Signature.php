@@ -1,16 +1,16 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Upyun;
+namespace CloudAtlas\Upyun;
 
-use CloudStorage\Credentials\CredentialsInterface;
-use CloudStorage\Signatures\SignatureInterface;
+use CloudAtlas\Credentials\CredentialsInterface;
+use CloudAtlas\Signatures\SignatureInterface;
 use Psr\Http\Message\RequestInterface;
 
 class Signature implements SignatureInterface

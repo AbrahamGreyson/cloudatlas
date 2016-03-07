@@ -1,13 +1,13 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage;
+namespace CloudAtlas;
 
 /**
  * 调试函数，用来描述给定值的类型或类。
@@ -33,7 +33,7 @@ function describeType($input)
 }
 
 /**
- * 从 CloudStorage 服务清单文件中取回内置的服务数据。
+ * 从 CloudAtlas 服务清单文件中取回内置的服务数据。
  *
  * @param string $service 大小写不敏感的服务命名空间或终端前缀。
  *
@@ -70,7 +70,7 @@ function manifest($service = null)
         return manifest($aliases[$service]);
     } else {
         throw new \InvalidArgumentException(
-            "The service \"{$service}\" is not provided by CloudStorage."
+            "The service \"{$service}\" is not provided by CloudAtlas."
         );
     }
 }
@@ -82,7 +82,7 @@ function manifest($service = null)
  * <code>
  * $a = function ($x, $y) { return null; }
  * $b = function ($x, $y) { return $x + $y; }
- * $fn = \CloudStorage\orChain($a, $b);
+ * $fn = \CloudAtlas\orChain($a, $b);
  * echo $fn(1, 2); // 3
  * </code>
  *

@@ -1,17 +1,17 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage;
+namespace CloudAtlas;
 
-use CloudStorage\Contracts\CommandInterface;
-use CloudStorage\Contracts\ResultInterface;
-use CloudStorage\Exceptions\CloudStorageException;
+use CloudAtlas\Contracts\CommandInterface;
+use CloudAtlas\Contracts\ResultInterface;
+use CloudAtlas\Exceptions\CloudAtlasException;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -19,7 +19,7 @@ use Psr\Http\Message\RequestInterface;
  *
  * @internal 重试失败时的处理。
  *
- * @package  CloudStorage
+ * @package  CloudAtlas
  */
 class RetryMiddleware
 {
@@ -51,7 +51,7 @@ class RetryMiddleware
     }
 
     /**
-     * 创建一个默认的 CloudStorage 重试决定者函数。
+     * 创建一个默认的 CloudAtlas 重试决定者函数。
      *
      * @param int $maxRetries
      *
@@ -77,11 +77,11 @@ class RetryMiddleware
                 return false;
             } elseif (!$error) {
                 return isset(self::$retryStatusCodes[$result['@metadata']['statusCode']]);
-            } elseif (!($error instanceof CloudStorageException)) {
+            } elseif (!($error instanceof CloudAtlasException)) {
                 return false;
             } elseif ($error->isConnectionError()) {
                 return true;
-            } elseif (isset(self::$retryStatusCodes[$error->getCloudStorageErrorCode()])) {
+            } elseif (isset(self::$retryStatusCodes[$error->getCloudAtlasErrorCode()])) {
                 return true;
             } elseif (isset(self::$retryStatusCodes[$error->getStatusCude()])) {
                 return true;

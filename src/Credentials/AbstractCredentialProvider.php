@@ -1,33 +1,33 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Credentials;
+namespace CloudAtlas\Credentials;
 
-use CloudStorage\Exceptions\CredentialsException;
+use CloudAtlas\Exceptions\CredentialsException;
 use GuzzleHttp\Promise;
 
 /**
  * 凭证提供者。
  *
  * 凭证提供者是不接受参数，并返回一个 promise，代表已完成的
- * {@see \CloudStorage\Credentials\CredentialsInterface} 或已失败的
- * {@see \CloudStorage\Exceptions\CloudStorageException} 的函数。
+ * {@see \CloudAtlas\Credentials\CredentialsInterface} 或已失败的
+ * {@see \CloudAtlas\Exceptions\CloudAtlasException} 的函数。
  *
  * <code>
- * use CloudStorage\Credentials\AbstractCredentialProvider;
+ * use CloudAtlas\Credentials\AbstractCredentialProvider;
  * $provider = AbstractCredentialProvider::defaultProvider();
  * // 返回 CredentialsInterface 或抛异常。
  * $creds = $provider()->wait();
  * </code>
  *
  * 凭证提供者可以被有条件的组合到一起，以便在不同环境中使用不同的凭证。可以通过使用 {@see
- * \CloudStorage\Credentials\AbstractCredentialProvider::chain()} 组合多个提供者至
+ * \CloudAtlas\Credentials\AbstractCredentialProvider::chain()} 组合多个提供者至
  * 单独一个提供者内。这个方法接受一个提供者作为参数，并返回一个新的函数，新的函数将调用每一个提供者
  * 直到一组凭证被成功返回。
  *
@@ -64,7 +64,7 @@ use GuzzleHttp\Promise;
  * });
  * </code>
  *
- * @package CloudStorage\Credentials
+ * @package CloudAtlas\Credentials
  */
 abstract class AbstractCredentialProvider implements CredentialProviderInterface
 {
@@ -82,7 +82,7 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
 
     /**
      * 创建默认凭证提供者，首先检查环境变量，然后检查 include_path 中的
-     * .cloudstorage/credentials 文件。
+     * .cloudatlas/credentials 文件。
      *
      * @return callable
      */
@@ -210,7 +210,7 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
      */
     public static function ini($profile = null, $filename = null)
     {
-        $filename = $filename ?: './.cloudstorage/credentials';
+        $filename = $filename ?: './.cloudatlas/credentials';
         $profile = $profile ?: (getenv(self::ENV_PROFILE) ?: 'default');
         $credentialConcrete = static::getCredentialConcrete();
 

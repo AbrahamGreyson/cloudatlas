@@ -1,21 +1,21 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Signatures;
+namespace CloudAtlas\Signatures;
 
-use CloudStorage\Credentials\CredentialsInterface;
+use CloudAtlas\Credentials\CredentialsInterface;
 use Psr\Http\Message\RequestInterface;
 
 /**
  * 为各个云服务、以及同一云服务的不同版本的签名方法，提供了统一接口。
  *
- * @package CloudStorage\Signatures
+ * @package CloudAtlas\Signatures
  */
 interface SignatureInterface
 {

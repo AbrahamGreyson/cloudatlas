@@ -1,15 +1,15 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Api;
+namespace CloudAtlas\Api;
 
-use CloudStorage\Exceptions\UnresolvedApiException;
+use CloudAtlas\Exceptions\UnresolvedApiException;
 
 /**
  * API 提供者。
@@ -19,10 +19,10 @@ use CloudStorage\Exceptions\UnresolvedApiException;
  *
  * 你可以使用 {@see Apiprovider::resolve} 方法包装调用的 API 提供者去确保 API 数据已经
  * 被创建。如果没有创建 API 数据，则该方法会抛出
- * {@see CloudStorage\Exceptions\UnresolvedApiException} 异常。
+ * {@see CloudAtlas\Exceptions\UnresolvedApiException} 异常。
  *
  * <code>
- * use CloudStorage\Api\ApiProvider;
+ * use CloudAtlas\Api\ApiProvider;
  * $provider = ApiProvider::defaultProvider();
  * // 返回数组或 null。
  * $data = $provider('api', 'upyun', 'v1');
@@ -30,20 +30,20 @@ use CloudStorage\Exceptions\UnresolvedApiException;
  * $data = ApiProvider::resolve($provider, 'api', 'upyun', 'v1');
  * </code>
  *
- * 可以使用 {@see CloudStorage\orChain} 函数组合多个提供者至单独的一个。这个函数接受
+ * 可以使用 {@see CloudAtlas\orChain} 函数组合多个提供者至单独的一个。这个函数接受
  * 提供者作为参数，返回一个将会依次调用所有提供者直到非空值被返回的函数。
  *
  * <code>
  * $a = ApiProvider::filesystem(sys_get_temp_dir() . 'test-apis');
  * $b = ApiProvider::manifest();
  *
- * $c = \CloudStorage\orChain($a, $b);
+ * $c = \CloudAtlas\orChain($a, $b);
  * $data = $c('api', 'testApi', 'v1'); // $a 处理这个。
  * $data = $c('api', 'qiniu', 'v1'); // $b 处理这个。
  * $data = $c('api', 'invalid', '2099-12-31'); // 哪个都不能处理无效的 API 数据请求。
  * </code>
  *
- * @package CloudStorage\Api
+ * @package CloudAtlas\Api
  */
 class ApiProvider
 {
@@ -76,7 +76,7 @@ class ApiProvider
      */
     public static function defaultProvider()
     {
-        return new self(__DIR__ . '/data', \CloudStorage\manifest());
+        return new self(__DIR__ . '/data', \CloudAtlas\manifest());
     }
 
     /**
@@ -197,7 +197,7 @@ class ApiProvider
         $path = "{$this->modelsDir}/{$service}/{$version}/{$type}.php";
 
         try {
-            return \CloudStorage\loadApiFileOrThrow($path);
+            return \CloudAtlas\loadApiFileOrThrow($path);
         } catch (\InvalidArgumentException $e) {
             return null;
         }

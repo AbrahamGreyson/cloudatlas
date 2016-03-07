@@ -1,13 +1,13 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage;
+namespace CloudAtlas;
 
 /**
  * 代表一个处理器列表。
@@ -18,7 +18,7 @@ namespace CloudStorage;
  * 列表中的处理器/中间件按照从前到后的顺序被调用。可以使用带有 prepend 的方法添加中间件至
  * 处理器列表的前面，使用带有 append 的方法添加中间件至处理器列表的后面。处理器列表中最后一个
  * 被调用的函数是处理器（函数不接受下一个处理器，而是负责返回一个 promise，用来表示一个已完成
- * 的 {@see \CloudStorage\Contracts\ResultInterface} 对象）。
+ * 的 {@see \CloudAtlas\Contracts\ResultInterface} 对象）。
  *
  * 列表中的处理器以 steps 属性排序， 用来描述 SDK 在发送命令时处于哪一步。可用的步骤包括：
  *
@@ -31,7 +31,7 @@ namespace CloudStorage;
  * 中间件能以一个名称来注册，便于通过名称简单的将它添加到另一个中间件的之前或之后。也便于
  * 通过名称移除一个中间件（还能通过实例移除）。
  *
- * @package CloudStorage
+ * @package CloudAtlas
  */
 class HandlerList implements \Countable
 {
@@ -413,7 +413,7 @@ class HandlerList implements \Countable
      * 传入的函数接受字符串类型的 step 参数和 name 参数。必须在其中返回另一个函数，
      * 该函数接受处理器列表中的下一个处理器。然后返回另一个函数，该函数接受一个
      * CommandInterface 参数和一个可选的 RequestInterface 参数，并返回一个 promise，
-     * promise 表示已完成的 ResultInterface 或已失败的 CloudStorageException 对象。
+     * promise 表示已完成的 ResultInterface 或已失败的 CloudAtlasException 对象。
      *
      * 参数应该是这个样子：
      *

@@ -1,18 +1,18 @@
 <?php
 
 /*
- * CloudStorage
- * @link  : https://github.com/AbrahamGreyson/cloudstorage
+ * CloudAtlas
+ * @link  : https://github.com/AbrahamGreyson/cloudatlas
  * @author: AbrahamGreyson <82011220@qq.com>
  * @license: MIT
  */
 
-namespace CloudStorage\Api;
+namespace CloudAtlas\Api;
 
 /**
  * 验证一组输入是否符合对应 API 要求。
  *
- * @package CloudStorage\Api
+ * @package CloudAtlas\Api
  */
 class Validator
 {
@@ -127,7 +127,7 @@ class Validator
     {
         if (!is_array($value)) {
             $this->addError('must be an array. Found '
-                . \CloudStorage\describeType($value));
+                . \CloudAtlas\describeType($value));
 
             return;
         }
@@ -171,7 +171,7 @@ class Validator
                 $this->addError('must be an fopen resource, a '
                     . 'GuzzleHttp\Stream\StreamInterface object, or something '
                     . 'that can be cast to a string. Found '
-                    . \CloudStorage\describeType($value));
+                    . \CloudAtlas\describeType($value));
             }
         }
     }
@@ -180,7 +180,7 @@ class Validator
     {
         if (!is_numeric($value)) {
             $this->addError('must be numeric. Found '
-                . \CloudStorage\describeType($value));
+                . \CloudAtlas\describeType($value));
 
             return;
         }
@@ -191,7 +191,7 @@ class Validator
     {
         if (!is_bool($value)) {
             $this->addError('must be a boolean. Found '
-                . \CloudStorage\describeType($value));
+                . \CloudAtlas\describeType($value));
         }
     }
 
@@ -199,7 +199,7 @@ class Validator
     {
         if (!$this->checkCanString($value)) {
             $this->addError('must be a string or an object that implements '
-                . '__toString(). Found ' . \CloudStorage\describeType($value));
+                . '__toString(). Found ' . \CloudAtlas\describeType($value));
 
             return;
         }
@@ -250,7 +250,7 @@ class Validator
     {
         if (!is_array($value) || isset($value[0])) {
             $this->addError('must be an associate array. Found '
-                . \CloudStorage\describeType($value));
+                . \CloudAtlas\describeType($value));
 
             return false;
         }

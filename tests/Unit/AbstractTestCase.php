@@ -1,6 +1,6 @@
 <?php
 
-namespace CloudStorage\Test\Unit;
+namespace CloudAtlas\Test\Unit;
 
 use PHPUnit_Runner_Version;
 
