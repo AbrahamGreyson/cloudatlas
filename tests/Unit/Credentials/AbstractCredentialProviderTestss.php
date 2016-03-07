@@ -5,6 +5,12 @@ namespace CloudAtlas\Test\Unit\Credentials;
 use CloudAtlas\Credentials\AbstractCredentialProvider;
 use CloudAtlas\Test\Unit\AbstractTestCase;
 
+/**
+ * Class AbstractCredentialProviderTest
+ *
+ *
+ * @package CloudAtlas\Test\Unit\Credentials
+ */
 class AbstractCredentialProviderTest extends AbstractTestCase
 {
     private $key, $secret, $profile;
