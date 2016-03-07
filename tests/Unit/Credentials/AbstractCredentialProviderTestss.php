@@ -11,7 +11,7 @@ use CloudAtlas\Test\Unit\AbstractTestCase;
  *
  * @package CloudAtlas\Test\Unit\Credentials
  */
-class AbstractCredentialProviderTest extends AbstractTestCase
+class AbstractCredentialProviderTestss extends AbstractTestCase
 {
     private $key, $secret, $profile;
 
