@@ -1,9 +1,9 @@
 {
-  "name": "ag/cloudatlas",
+  "name": "abrahamgreyson/cloudatlas",
   "description": "The cloud service develop package.",
   "license": "MIT",
   "support": {
-    "issues": "https://github.com/AbrahamGreyson/cloudatlasissues",
+    "issues": "https://github.com/AbrahamGreyson/cloudatlas/issues",
     "source": "https://github.com/AbrahamGreyson/cloudatlas"
   },
   "authors": [
