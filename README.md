@@ -5,8 +5,8 @@ SDK
 [![Build Status](https://travis-ci.org/AbrahamGreyson/cloudatlas.svg?branch=master)](https://travis-ci.org/AbrahamGreyson/cloudatlas)
 [![Code Coverage](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudatlas/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudatlas/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudatlas/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudatlas/?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/abraham-greyson/cloudatlas/version)](https://packagist.org/packages/abraham-greyson/cloudatlas)
-[![Latest Unstable Version](https://poser.pugx.org/abraham-greyson/cloudatlas/v/unstable)](https://packagist.org/packages/abraham-greyson/cloudatlas)
+[![Latest Stable Version](https://poser.pugx.org/abrahamgreyson/cloudatlas/version)](https://packagist.org/packages/abrahamgreyson/cloudatlas)
+[![Latest Unstable Version](https://poser.pugx.org/abrahamgreyson/cloudatlas/v/unstable)](https://packagist.org/packages/abrahamgreyson/cloudatlas)
 [![License](https://img.shields.io/badge/license-MIT-000000.svg)](https://packagist.org/packages/abraham-greyson/cloudatlas)
 
 
