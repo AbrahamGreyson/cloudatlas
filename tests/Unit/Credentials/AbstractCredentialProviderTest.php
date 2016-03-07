@@ -44,7 +44,5 @@ class AbstractCredentialProviderTest extends AbstractTestCase
         putenv(AbstractCredentialProvider::ENV_SECRET . '=123');
         $credential = AbstractCredentialProvider::env()->wait();
         $this->assertEquals('abc', $credential->getKey());
-
     }
 }
-
