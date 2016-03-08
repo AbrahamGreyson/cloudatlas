@@ -70,7 +70,7 @@ abstract class AbstractCredentialProvider implements CredentialProviderInterface
 {
     const ENV_KEY     = 'undefined';
     const ENV_SECRET  = 'undefined';
-    const ENV_PROFILE = 'CLOUDSTORAGE_PROFILE';
+    const ENV_PROFILE = 'CLOUDATLAS_PROFILE';
 
     protected static $service = null;
 

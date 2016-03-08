@@ -53,7 +53,7 @@ class ClientResolver
             'valid'    => ['string'],
             'required' => true,
             'internal' => true,
-            'doc'      => '初始化的云服务名称。通过对应的云服务客户端使用 CloudAtlas 时，这个值是默认自动填充的（如：Cloudstorage\\Upyun\\UpyunClient）填充为 upyun。',
+            'doc'      => '初始化的云服务名称。通过对应的云服务客户端使用 CloudAtlas 时，这个值是默认自动填充的（如：CloudAtlas\\Upyun\\UpyunClient）填充为 upyun。',
         ],
         'exceptionClass'    => [
             'type'     => 'value',
@@ -97,7 +97,7 @@ class ClientResolver
             'type'  => 'config',
             'valid' => ['string'],
             'fn'    => [__CLASS__, 'applyProfile'],
-            'doc'   => '当云服务凭证是从配置文件中创建的，指定使用哪一个身份。这个设置会覆盖 CLOUDSTORAGE_PROFILE 环境变量。注意：指定 profile 会导致 credentials 设置中的内容被忽略。',
+            'doc'   => '当云服务凭证是从配置文件中创建的，指定使用哪一个身份。这个设置会覆盖 CLOUDATLAS_PROFILE 环境变量。注意：指定 profile 会导致 credentials 设置中的内容被忽略。',
         ],
         'credentials'       => [
             'type'    => 'value',

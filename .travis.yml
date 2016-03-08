@@ -27,7 +27,7 @@ matrix:
   fast_finish: true
 
 install:
-  - export CLOUDSTORAGE_PROFILE=defa
+  - export CLOUDATLAS_PROFILE=defa
   # speed up package installation process use parallel.
   - composer global require hirak/prestissimo
   - composer update --prefer-source --no-interaction $composer_prefer

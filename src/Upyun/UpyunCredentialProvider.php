@@ -19,8 +19,8 @@ use CloudAtlas\Credentials\AbstractCredentialProvider;
 
 class UpyunCredentialProvider extends AbstractCredentialProvider
 {
-    const ENV_KEY    = 'CLOUDSTORAGE_UPYUN_KEY';
-    const ENV_SECRET = 'CLOUDSTORAGE_UPYUN_SECRET';
+    const ENV_KEY    = 'CLOUDATLAS_UPYUN_KEY';
+    const ENV_SECRET = 'CLOUDATLAS_UPYUN_SECRET';
 
     /**
      * 获取不同服务的不同凭证实现，这个方法需要子类来实现，返回对应服务的 Credential 类
