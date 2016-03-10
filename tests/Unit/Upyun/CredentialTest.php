@@ -5,6 +5,13 @@ namespace CloudAtlas\Test\Unit\Upyun;
 use CloudAtlas\Test\Unit\AbstractTestCase;
 use CloudAtlas\Upyun\Credential;
 
+/**
+ * Class CredentialTest
+ *
+ * @covers \CloudAtlas\Qiniu\Credential
+ *
+ * @package CloudAtlas\Test\Unit\Upyun
+ */
 class CredentialTest extends AbstractTestCase
 {
     public function testGettersAndSetters()

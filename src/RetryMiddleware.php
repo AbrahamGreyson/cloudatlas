@@ -108,7 +108,6 @@ class RetryMiddleware
         RequestInterface $request = null
     ) {
         $retries = 0;
-        $retries = 0;
         $handler = $this->nextHandler;
         $decider = $this->decider;
         $delay = $this->delay;
