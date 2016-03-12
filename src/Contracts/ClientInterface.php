@@ -20,6 +20,11 @@ use Psr\Http\Message\UriInterface;
 interface ClientInterface
 {
     /**
+     * @return array
+     */
+    public static function getDefaultArguments();
+
+    /**
      * 根据操作名称创建并执行一个命令。
      *
      * 以 Async 为后缀的操作名称将返回一个可以被异步执行的 promise。
@@ -76,6 +81,13 @@ interface ClientInterface
     public function getCredentials();
 
     /**
+     * 获取客户端用来发送请求的地区（如果有）。
+     *
+     * @return string
+     */
+    //public function getRegion();
+
+    /**
      * 获取默认的连接点或 URL，供客户端使用。
      *
      * @return UriInterface
@@ -84,6 +96,7 @@ interface ClientInterface
 
     /**
      * 获取和对应云服务客户端相关联的服务描述。
+     *
      * @return \CloudAtlas\Api\Service
      */
     public function getApi();
@@ -129,19 +142,33 @@ interface ClientInterface
     public function getPaginator($name, array $args = []);
 
     ///**
+    // * 等待某个资源变为特定状态。
     // *
-    // * @param       $name
-    // * @param array $args
+    // * @param string|callable $name 等待器的名字，定义了等待配置和条件。
+    // * @param array           $args 被每个等待器执行的命令参数。等待器配置选项可以以关联数组的形式
+    // *                              写在 @waiter 键中。
     // *
-    // * @return mixed
+    // * @return void
+    // * @throws \UnexpectedValueException 如果等待器无效。
     // */
     //public function waitUntil($name, array $args = []);
     //
     ///**
-    // * @param       $name
-    // * @param array $args
+    // * 获取一个等待器，等待某个资源变为特定状态。
     // *
-    // * @return mixed
+    // * 获取等待器在等待异步操作结果的时候可能很有用。
+    // *
+    // * <code>
+    // * $waiter = $client->getWaiter('foo', ['bar' => 'baz']);
+    // * $waiter->promise()->then(function () { echo 'Done!'; });
+    // * </code>
+    // *
+    // * @param string|callable $name 等待器的名字，定义了等待配置和条件。
+    // * @param array           $args 被每个等待器执行的命令参数。等待器配置选项可以以关联数组的形式
+    // *                              写在 @waiter 键中。
+    // *
+    // * @return \CloudAtlas\Waiter
+    // * @throws \UnexpectedValueException 如果等待器无效。
     // */
     //public function getWaiter($name, array $args = []);
 }
