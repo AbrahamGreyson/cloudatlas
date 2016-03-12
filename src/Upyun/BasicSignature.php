@@ -13,6 +13,13 @@ use CloudAtlas\Credentials\CredentialsInterface;
 use CloudAtlas\Signatures\SignatureInterface;
 use Psr\Http\Message\RequestInterface;
 
+/**
+ * 又拍云 base64 基本签名。
+ *
+ * ** 有安全隐患十分不建议用这个！ **
+ *
+ * @package CloudAtlas\Upyun
+ */
 class BasicSignature implements SignatureInterface
 {
     
