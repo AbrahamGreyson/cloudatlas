@@ -14,11 +14,11 @@ use CloudAtlas\Exceptions\UnresolvedApiException;
 /**
  * API 提供者。
  *
- * 是一个函数，它接收分类（如 api，paginator，waiter），服务名称（如 upyun，qiniu）
+ * 一个函数，接收分类（如 api，paginator，waiter），服务名称（如 upyun，qiniu）
  * 和版本，并返回一个 API 数据的数组。如果提供的信息找不到对应 API 数据则返回 null。
  *
  * 你可以使用 {@see Apiprovider::resolve} 方法包装调用的 API 提供者去确保 API 数据已经
- * 被创建。如果没有创建 API 数据，则该方法会抛出
+ * 被成功创建。如果没有创建 API 数据，则该方法会抛出
  * {@see CloudAtlas\Exceptions\UnresolvedApiException} 异常。
  *
  * <code>
@@ -31,7 +31,7 @@ use CloudAtlas\Exceptions\UnresolvedApiException;
  * </code>
  *
  * 可以使用 {@see CloudAtlas\orChain} 函数组合多个提供者至单独的一个。这个函数接受
- * 提供者作为参数，返回一个将会依次调用所有提供者直到非空值被返回的函数。
+ * API 提供者作为参数，返回一个将会依次调用所有提供者直到非空值被返回的函数。
  *
  * <code>
  * $a = ApiProvider::filesystem(sys_get_temp_dir() . 'test-apis');
