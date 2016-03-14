@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 /*
  * CloudAtlas
@@ -10,11 +10,20 @@
 namespace CloudAtlas\Upyun;
 
 use CloudAtlas\Client;
-use CloudAtlas\Contracts\ResultPaginator;
+use CloudAtlas\ClientResolver;
 
 class UpyunClient extends Client
 {
-    
+    /**
+     * 获取默认的客户端构造参数用于实例化客户端。
+     *
+     * @return array
+     */
+    public static function getDefaultArguments()
+    {
+        return ClientResolver::getDefaultArguments();
+    }
+
     /**
      * 获取和对应云服务客户端相关联的服务描述。
      *

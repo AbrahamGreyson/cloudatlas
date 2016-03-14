@@ -20,15 +20,13 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * CloudAtlas 客户端，用来和云服务进行交互。
- * @method Promise PutObject($bucket, $key, $stream);
- * @method Promise Copy($key, $to);
  *
  * @package CloudAtlas
  */
-class Client implements ClientInterface
+abstract class Client implements ClientInterface
 {
     /**
-     * @var Service
+     * @var \CloudAtlas\Api\Service
      */
     private $api;
 
@@ -98,7 +96,7 @@ class Client implements ClientInterface
         list($arguments['service'], $arguments['exceptionClass']) = $this->parseClass();
 
         $this->handlerList = new HandlerList();
-        $clientConstructor = new ClientConstructor(static::getDefaultArguments());
+        $clientConstructor = new ClientResolver(static::getDefaultArguments());
         $config = $clientConstructor->resolve($arguments, $this->handlerList);
         $this->api = $config['api'];
         $this->credentialProvider = $config['credentialProvider'];
@@ -108,16 +106,7 @@ class Client implements ClientInterface
         $this->defaultRequestOptions = $config['http'];
         $stack = static::getHandlerList();
         static::addSignatureMiddleware();
-        //static::
-    }
 
-    /**
-     * 获取默认的客户端构造参数用于实例化客户端。
-     * @return array
-     */
-    public static function getDefaultArguments()
-    {
-        return ClientConstructor::getDefaultArguments();
     }
 
     /**
