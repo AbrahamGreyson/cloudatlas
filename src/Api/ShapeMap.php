@@ -11,20 +11,40 @@ namespace CloudAtlas\Api;
 
 class ShapeMap
 {
+    /**
+     * @var array
+     */
     private $definitions;
 
+    /**
+     * @var Shape[]
+     */
     private $simple;
 
+    /**
+     * @param array $shapeModels 形状定义的关联数组。
+     */
     public function __construct(array $shapeModels)
     {
-        $this->definitions = $shapeModels;
+        $this->itions = $shapeModels;
     }
 
+    /**
+     * 获取形状名称列表。
+     *
+     * @return array
+     */
     public function getShapeNames()
     {
         return array_keys($this->definitions);
     }
 
+    /**
+     *
+     * @param array $shapeReference
+     *
+     * @return Shape
+     */
     public function resolve(array $shapeReference)
     {
         $shape = $shapeReference['shape'];
@@ -45,7 +65,7 @@ class ShapeMap
         $result = Shape::create($definition, $this);
 
         if ($isSimple) {
-            $this->simple[$shape] = $resule;
+            $this->simple[$shape] = $result;
         }
 
         return $result;

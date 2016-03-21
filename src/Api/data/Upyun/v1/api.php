@@ -10,6 +10,7 @@
 return [
     'version'    => 'v1',
     'metadata'   => [
+        'serviceName' => 'Upyun',
         'apiVersion'          => 'v1',
         'checksumFormat'      => 'md5',
         'endpointPrefix'      => 'v0',

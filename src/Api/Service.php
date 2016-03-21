@@ -16,14 +16,40 @@ namespace CloudAtlas\Api;
  */
 class Service extends AbstractModel
 {
+    /**
+     * @var callable
+     */
     private $apiProvider;
 
-    private $service;
+    /**
+     * @var string
+     */
+    private $serviceName;
 
-    private $version;
+    /**
+     * @var string
+     */
+    private $apiVersion;
 
+    /**
+     * @var Operation[]
+     */
     private $operations = [];
 
+    /**
+     * @var array
+     */
+    private $paginators = null;
+
+    /**
+     * @var array
+     */
+    private $waiters = null;
+
+    /**
+     * @param array    $definition
+     * @param callable $provider
+     */
     public function __construct(array $definition, callable $provider)
     {
         static $default = [
@@ -42,7 +68,11 @@ class Service extends AbstractModel
 
         $definition += $default;
         $definition['metadata'] += $defaultMeta;
+        $this->definition = $definition;
         $this->apiProvider = $provider;
+        parent::__construct($definition, new ShapeMap($definition['shapes']));
+        $this->serviceName = $this->getServiceName();
+        $this->apiVersion = $this->getApiVersion();
     }
 
     /**
@@ -82,5 +112,29 @@ class Service extends AbstractModel
     private function getProtocol()
     {
         return $this->definition['metadata']['protocol'];
+    }
+
+    public static function createErrorParser($getProtocol)
+    {
+    }
+
+    /**
+     * 获取 API 的服务名。
+     *
+     * @return string
+     */
+    public function getServiceName()
+    {
+        return $this->definition['metadata']['serviceName'];
+    }
+
+    /**
+     * 获取 API 的版本号。
+     *
+     * @return string
+     */
+    public function getApiVersion()
+    {
+        return $this->definition['metadata']['apiVersion'];
     }
 }
