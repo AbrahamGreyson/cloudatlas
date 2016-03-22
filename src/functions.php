@@ -8,6 +8,7 @@
  */
 
 namespace CloudAtlas;
+use GuzzleHttp\ClientInterface;
 
 /**
  * 调试函数，用来描述给定值的类型或类。
@@ -121,4 +122,17 @@ function loadApiFileOrThrow($path)
     throw new \InvalidArgumentException(
         sprintf("File not found or can not be read: %s", $path)
     );
+}
+
+/**
+ * 根据 HTTP 客户端可用情况创建默认的 HTTP 处理器。
+ *
+ * @return callable
+ */
+function defaultHttpHandler()
+{
+    $version = (string) ClientInterface::VERSION;
+    // todo guzzle handler
+    return function () use ($version) {
+    };
 }
