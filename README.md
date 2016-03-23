@@ -6,8 +6,8 @@ SDK
 [![Code Coverage](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudatlas/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudatlas/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudatlas/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AbrahamGreyson/cloudatlas/?branch=master)
 [![Code Climate](https://codeclimate.com/github/AbrahamGreyson/cloudatlas/badges/gpa.svg)](https://codeclimate.com/github/AbrahamGreyson/cloudatlas)
-[![Latest Stable Version](https://poser.pugx.org/abrahamgreyson/cloudatlas/version)](https://packagist.org/packages/abrahamgreyson/cloudatlas)
-[![Latest Unstable Version](https://poser.pugx.org/abrahamgreyson/cloudatlas/v/unstable)](https://packagist.org/packages/abrahamgreyson/cloudatlas)
+[![Latest Stable Version](https://poser.pugx.org/abe/cloudatlas/version)](https://packagist.org/packages/abe/cloudatlas)
+[![Latest Unstable Version](https://poser.pugx.org/abe/cloudatlas/v/unstable)](https://packagist.org/packages/abe/cloudatlas)
 [![License](https://img.shields.io/badge/license-MIT-000000.svg)](https://packagist.org/packages/abraham-greyson/cloudatlas)
 
 
