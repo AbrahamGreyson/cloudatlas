@@ -17,8 +17,6 @@ use Psr\Http\Message\RequestInterface;
 /**
  * 重试中间件。
  *
- * @internal 重试失败时的处理。
- *
  * @package  CloudAtlas
  */
 class RetryMiddleware
